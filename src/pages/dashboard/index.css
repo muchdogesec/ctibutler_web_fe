@@ -1,0 +1,18 @@
+.footer {
+    height: 5rem;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    bottom: 0px;
+    left: 0px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    background-color: #C0C5CC;
+    z-index: 10000;
+}
+
+.footer-div {
+    height: 4rem;
+    width: 100%;
+}
