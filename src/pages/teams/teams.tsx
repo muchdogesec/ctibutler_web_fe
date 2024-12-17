@@ -118,7 +118,6 @@ function TeamList({ isAdmin }: TeamListProps) {
   }
 
   const limitExceeded = (team: AdminTeam) => {
-    if (team?.feed_count > team.feed_limit) return true
     if ((team.members_count + team.invitations_count) > team.user_limit) {
       return true
     }
@@ -136,9 +135,8 @@ function TeamList({ isAdmin }: TeamListProps) {
             Teams
           </Typography>
           <Typography className="description">
-            <p>You can create one or more teams below. You must create at least one team to add a feed.</p>
+            <p>You can create one or more teams below. You must create at least one team to access the API.</p>
             <p>Most users only require one team for their organisation.</p>
-            <p>Each team you create has a subscription which limits the number of blog feeds you can subscribe to, and how many users can be added to the team to view the content.</p>
           </Typography>
         </>
         )}

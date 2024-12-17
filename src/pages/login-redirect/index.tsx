@@ -8,9 +8,14 @@ import { getActiveTeamId, getInvitationId, setActiveTeamId, setApiKey, setAuthTo
 import { Api } from "../../services/api.ts";
 import { TeamContext } from "../../contexts/team-context.tsx";
 import { URLS } from "../../services/urls.ts";
+import EmailInputDialog from "./email-input-modal.tsx";
 
 
-const ErrorDialog = ({ open, onClose, errorMessage }) => {
+const ErrorDialog = ({ open, onClose, errorMessage, onResendClicked }) => {
+  const sendVerificationMail = async () => {
+    onResendClicked()
+  }
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Error</DialogTitle>
@@ -18,7 +23,10 @@ const ErrorDialog = ({ open, onClose, errorMessage }) => {
         <Typography>{errorMessage}</Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
+        <Button onClick={() => sendVerificationMail()} variant="contained" color="primary">
+          Resend verification mail
+        </Button>
+        <Button onClick={onClose} variant="contained" color="error">
           Close
         </Button>
       </DialogActions>
@@ -30,6 +38,7 @@ const LoginRedirect = () => {
   const { error, user, getAccessTokenSilently, isAuthenticated, isLoading, logout } = useAuth0();
   const [loading, setLoading] = useState(true)
   const [showErrorDialog, setShowErrorDialog] = useState(false)
+  const [showEmailInputDialog, setShowEmailInputDialog] = useState(false);
   const { setActiveTeam } = useContext(TeamContext);
   const navigate = useNavigate();
 
@@ -77,16 +86,21 @@ const LoginRedirect = () => {
       let activeTeamId = getActiveTeamId();
       const team = teams.find(team => team.id === activeTeamId)
       if (team) {
-          setActiveTeam(team)
+        setActiveTeam(team)
       } else {
-          setActiveTeam(teams[0])
-          setActiveTeamId(teams[0].id)
+        setActiveTeam(teams[0])
+        setActiveTeamId(teams[0].id)
       }
       navigate(
         URLS.teamManagement(activeTeamId)
       )
     }
   };
+
+  const onResendClicked = () => {
+    setShowEmailInputDialog(true)
+    setShowErrorDialog(false)
+  }
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -102,7 +116,15 @@ const LoginRedirect = () => {
           </DialogActions>
         </Dialog>
       )}
-      <ErrorDialog open={showErrorDialog} onClose={() => navigate('/')} errorMessage={error?.message} />
+      <ErrorDialog
+        open={showErrorDialog}
+        onResendClicked={() => onResendClicked()}
+        onClose={() => navigate('/')} errorMessage={error?.message}
+      />
+      <EmailInputDialog
+        open={showEmailInputDialog}
+        onClose={() => setShowEmailInputDialog(false)}
+      />
     </div>
   );
 };

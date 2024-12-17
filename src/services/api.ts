@@ -17,26 +17,31 @@ const apiRequest = async <T>(
     data?: any,
     headers: Record<string, string> = {},
     params: Record<string, string | number> = {},
+    auth=true,
 ) => {
     try {
+        const authorization = auth ? {
+            Authorization: `Token ${getApiKey()}`,
+        } : {}
         const response = await axios<T>({
             method,
             url: `${API_BASE_URL}${path}`,
             data,
             headers: {
-                Authorization: `Token ${getApiKey()}`,
+                ...authorization,
                 ...headers,
             },
             params,
         });
         return response;
     } catch (error) {
-        if(error?.response?.status === 401) {
+        if (error?.response?.status === 401) {
             window.location.href = '/logout-redirect'
         }
         throw error;
     }
 };
+
 
 // Authentication API
 const authApi = async (accessToken: string): Promise<string> => {
@@ -181,6 +186,11 @@ const cancelMembership = async (teamId: string) => {
 const cancelInvitation = async (teamId: string, invitationId: number) => {
     return apiRequest<void>('DELETE', `/teams/api/teams/${teamId}/invitations/${invitationId}/`);
 };
+
+const resendEmailVerificationEmail = async (email: string) => {
+    console.log(email)
+    return apiRequest<void>('POST', `/users/email/resend-verification-email/`, { email }, {}, {}, false);
+}
 
 type Price = {
     id: string;
@@ -375,4 +385,5 @@ export const Api = {
     fetchApiKeys,
     createApiKey,
     bulkInviteUser,
+    resendEmailVerificationEmail,
 };

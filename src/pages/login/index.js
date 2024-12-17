@@ -1,11 +1,14 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { useEffect } from "react";
 import { CircularProgress, Container, Typography, Box } from "@mui/material";
+import { clearAuthData } from "../../services/storage.ts";
+
 
 const Login = () => {
   const { loginWithRedirect } = useAuth0();
 
   useEffect(() => {
+    clearAuthData()
     loginWithRedirect();
   }, [loginWithRedirect]);
 

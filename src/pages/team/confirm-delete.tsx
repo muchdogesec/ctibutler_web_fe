@@ -45,7 +45,7 @@ export const ConfirmDeleteDialog = ({ team, open, onClose }: {
             <DialogTitle><Typography variant="h5" sx={{ textAlign: 'center' }}>Confirm Delete Team</Typography></DialogTitle>
             <DialogContent>
                 <Typography>
-                    Deleting this team is irreversible. This action will immediately make the team and its feeds inaccessible to members and deactivate any API keys associated with this team. It will also cancel the teams subscription so no more payments are made (but you will not receive a refund for the remaining time until renewal) Enter the team `{team.name}` to confirm
+                    Deleting this team is irreversible. This action will immediately make the team and deactivate any API keys associated with this team. It will also cancel the teams subscription so no more payments are made (but you will not receive a refund for the remaining time until renewal) Enter the team `{team.name}` to confirm
                 </Typography>
                 <Box sx={{ display: 'flex' }}>
                     <TextField

@@ -12,8 +12,6 @@ export interface ITeam {
     allowed_data_download: boolean;
     subscription: Subscription;
     has_active_subscription: boolean;
-    feed_count: number;
-    feed_limit: number;
     user_limit: number;
     members_count: number;
     api_keys_count: number;
@@ -22,15 +20,12 @@ export interface ITeam {
 
 export interface ITeamWithLimit extends ITeam {
     limits_exceeded: boolean;
-    feed_limit: number;
 }
 
 export interface AdminTeam extends ITeam {
     user_emails: string[];
     members_count: number,
     invitations_count: number,
-    feed_count: number,
-    feed_limit: number,
     user_limit: number,
 }
 
