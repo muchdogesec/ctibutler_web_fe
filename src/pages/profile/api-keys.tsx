@@ -157,7 +157,8 @@ const ApiKeyManager = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button sx={{textTransform: 'uppercase'}} variant='contained' color='error' onClick={() => setShowCreateDialog(false)}>Cancel</Button>
-                    <Button variant='contained' onClick={() => handleSubmit()}>Create</Button>
+                    
+                    <Button disabled={!teamId || !newKeyName}   variant='contained' onClick={() => handleSubmit()}>Create</Button>
                 </DialogActions>
             </Dialog>
             <Dialog open={showDeleteDialog} onClose={() => setShowDeleteDialog(false)}>
@@ -175,7 +176,7 @@ const ApiKeyManager = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button sx={{textTransform: 'uppercase'}} variant='contained' color='error' onClick={() => setShowDeleteDialog(false)}>Cancel</Button>
-                    <Button  sx={{textTransform: 'uppercase'}} variant='contained' color='primary' onClick={() => handleDelete()}>Delete</Button>
+                    <Button sx={{textTransform: 'uppercase'}} variant='contained' color='primary' onClick={() => handleDelete()}>Delete</Button>
                 </DialogActions>
             </Dialog>
             <ApiKeyDialog open={showKeyDialog} onClose={() => setShowKeyDialog(false)} apiKey={newKey}></ApiKeyDialog>

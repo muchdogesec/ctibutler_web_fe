@@ -375,22 +375,36 @@ function Team() {
           <Typography variant="h5" gutterBottom>
             Subscription
           </Typography>
-          <Box sx={{ display: 'flex' }}>
-            <Typography style={{ fontWeight: 'bold', marginRight: '2rem' }}>Product name:</Typography>
-            <Typography>{activeSubscription?.items[0].price.product_name}</Typography>
-          </Box>
-          <Box sx={{ display: 'flex' }}>
-            <Typography style={{ fontWeight: 'bold', marginRight: '2rem' }}>Cost:</Typography>
-            <Typography>{activeSubscription?.items[0].price.payment_amount}</Typography>
-          </Box>
-          <Box sx={{ display: 'flex' }}>
-            <Typography style={{ fontWeight: 'bold', marginRight: '2rem' }}>Next Billing Date:</Typography>
-            <Typography>{getSubscriptionNextBillingDate()}</Typography>
-          </Box>
-          <Box sx={{ display: 'flex' }}>
-            <Typography style={{ fontWeight: 'bold', marginRight: '2rem' }}>Subscription Status:</Typography>
-            <Typography sx={{ textTransform: 'capitalize' }}>{activeSubscription?.status || 'No subscription'}</Typography>
-          </Box>
+          <TableContainer component={Paper} sx={{ marginTop: '2rem' }}>
+
+            <Table>
+              <TableHead>
+                <TableRow>
+                </TableRow>
+                <TableCell>Key</TableCell>
+                <TableCell>Value</TableCell>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell style={{ fontWeight: 'bold', marginRight: '2rem' }}>Product name:</TableCell>
+                  <TableCell>{activeSubscription?.items[0].price.product_name}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell style={{ fontWeight: 'bold', marginRight: '2rem' }}>Cost:</TableCell>
+                  <TableCell>{activeSubscription?.items[0].price.payment_amount}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell style={{ fontWeight: 'bold', marginRight: '2rem' }}>Next Billing Date:</TableCell>
+                  <TableCell>{getSubscriptionNextBillingDate()}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell style={{ fontWeight: 'bold', marginRight: '2rem' }}>Subscription Status:</TableCell>
+                  <TableCell sx={{ textTransform: 'capitalize' }}>{activeSubscription?.status || 'No subscription'}</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+
           <TableContainer component={Paper} sx={{ marginTop: '2rem' }}>
             <Table>
               <TableHead>
@@ -413,9 +427,9 @@ function Team() {
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Data Download</TableCell>
-                  <TableCell>{activeTeam?.allowed_data_download ? 'True' : 'False'}</TableCell>
-                  <TableCell>N/A</TableCell>
+                  <TableCell>Users in team</TableCell>
+                  <TableCell>{activeTeam?.user_limit}</TableCell>
+                  <TableCell>{(activeTeam?.members_count || 0) + (activeTeam?.invitations_count || 0)}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
