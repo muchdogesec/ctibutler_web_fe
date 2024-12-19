@@ -98,9 +98,10 @@ const ApiKeyManager = () => {
 
     return (
         <>
-            <Typography variant='h5'>API Keys</Typography>
+            <Typography variant='h5'>Your API Keys</Typography>
             <Typography className="description">
-                You can generate API keys to use with the Ctibuttler API. API keys are linked to teams, and will only return the data for the specific team it is assigned to. Note, if your teams subscription does not support API use then you will not be able to generate an API key for it. Please ask the team owner or admins to upgrade the teams subscription.
+                <p>You can generate API keys to use with the CTI Butler API. API keys are linked to teams, and will only return the data for the specific team it is assigned to.</p>
+                <p>Note, if your teams' subscription does not support API use then you will not be able to generate an API key for use with it. Please ask a team owner or team admin to upgrade the teams subscription to enable access.</p>
             </Typography>
             <Button variant="contained" sx={{textTransform: 'uppercase'}} onClick={() => {initCreateToken()}}>Create Token</Button>
 
@@ -132,7 +133,7 @@ const ApiKeyManager = () => {
             </TableContainer>
 
             <Dialog open={showCreateDialog} onClose={() => setShowCreateDialog(false)}>
-                <DialogTitle>Create an API Token</DialogTitle>
+                <DialogTitle>Create a New API Key</DialogTitle>
                 <DialogContent>
                     <Typography>API keys are linked to teams, and will only return the data for the team it is assigned to. Note, if your teams subscription does not support API use then you will not be able to generate an API key for it. Please ask the team owner or admins to upgrade the teams subscription.</Typography>
                     <TextField

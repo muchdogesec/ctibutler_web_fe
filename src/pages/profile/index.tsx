@@ -168,10 +168,12 @@ const UserProfile = () => {
         <Container>
             <Box my={4}>
                 <Typography variant="h4" gutterBottom>
-                    Account Settings
+                    Your Account Settings
                 </Typography>
-                <Typography className="description">Use this page to make changes to your account.</Typography>
-                <Typography variant="h5">Authentication details</Typography>
+                <Typography className="description">
+                    <p>Use this page to make changes to your account.</p>
+                </Typography>
+                <Typography variant="h5">Account Details</Typography>
                 <Typography className="description">
                     <p>It is not currently possible to edit your email address. If you wish to use another email, you can delete this account and create another account using the desired email.
                     </p>

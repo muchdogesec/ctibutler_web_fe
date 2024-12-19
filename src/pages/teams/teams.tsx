@@ -128,11 +128,11 @@ function TeamList({ isAdmin }: TeamListProps) {
       <Box my={4}>
         {isAdmin ? (
           <Typography variant="h4" gutterBottom>
-            Teams
+            Your Teams
           </Typography>
         ) : (<>
           <Typography variant="h5" gutterBottom>
-            Teams
+            Your Teams
           </Typography>
           <Typography className="description">
             <p>You can create one or more teams below. You must create at least one team to access the API.</p>
