@@ -288,17 +288,21 @@ function Team() {
 
   return (
     <Container>
+
       <Box my={4}>
+
           <Typography variant="h4" gutterBottom>
             Team Management
           </Typography>
           <Typography className="description">
             <p>Use this page to view information about your team. Only a team owner or a team admin can make changes.</p>
           </Typography>
+
           <Typography variant="h5">Team Details</Typography>
           <Typography className="description">
             <p>Your team ID, name, and description is only visible to members of this team and those that are invited to join the team.</p>
           </Typography>
+
         <Grid container spacing={2}>
         </Grid>
         <Dialog open={openInvite} onClose={handleCloseInvite}>
@@ -369,6 +373,7 @@ function Team() {
             disabled={disableEdit}
           />
           {disableEdit && <Button color="success" variant="contained" onClick={() => setDisableEdit(false)}>Edit</Button>}
+
         </Box>
 
         <Box mt={4}>
@@ -392,8 +397,8 @@ function Team() {
               <TableHead>
                 <TableRow>
                 </TableRow>
-                <TableCell>Key</TableCell>
-                <TableCell>Value</TableCell>
+                <TableCell style={{ fontWeight: 'bold' }}>Key</TableCell>
+                <TableCell style={{ fontWeight: 'bold' }}>Value</TableCell>
               </TableHead>
               <TableBody>
                 <TableRow>
@@ -427,10 +432,9 @@ function Team() {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Feature</TableCell>
-                  <TableCell>Value</TableCell>
-                  <TableCell>Usage</TableCell>
-                  <TableCell></TableCell>
+                  <TableCell style={{ fontWeight: 'bold' }}>Feature</TableCell>
+                  <TableCell style={{ fontWeight: 'bold' }}>Value</TableCell>
+                  <TableCell style={{ fontWeight: 'bold' }}>Usage</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -445,7 +449,7 @@ function Team() {
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Users in team</TableCell>
+                  <TableCell>Allowed users in team</TableCell>
                   <TableCell>{activeTeam?.user_limit}</TableCell>
                   <TableCell>{(activeTeam?.members_count || 0) + (activeTeam?.invitations_count || 0)}</TableCell>
                 </TableRow>
@@ -456,8 +460,8 @@ function Team() {
 
         </Box>
 
-
         <Box mt={4}>
+
           <Typography variant="h5" gutterBottom>
             Team Members
           </Typography>
@@ -467,13 +471,14 @@ function Team() {
           <Typography variant="h6" gutterBottom>
             Current Team Members
           </Typography>
+
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Role</TableCell>
-                  <TableCell></TableCell>
+                  <TableCell style={{ fontWeight: 'bold' }}>Email</TableCell>
+                  <TableCell style={{ fontWeight: 'bold' }}>Role</TableCell>
+                  <TableCell style={{ fontWeight: 'bold' }}>Available Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -509,23 +514,25 @@ function Team() {
               </TableBody>
             </Table>
           </TableContainer>
+
         </Box>
 
-
         <Box mt={4}>
+
           <Typography variant="h6" gutterBottom>
             Pending Invites
           </Typography>
           <Typography className="description">
             <p>This shows invitations sent out that are yet to be responded to. Once an invitation is accepted or rejected by the user, or revoked by a team admin or owner it will disappear from this table.</p>
           </Typography>
+
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Role</TableCell>
-                  <TableCell>Actions</TableCell>
+                  <TableCell style={{ fontWeight: 'bold' }}>Email</TableCell>
+                  <TableCell style={{ fontWeight: 'bold' }}>Role</TableCell>
+                  <TableCell style={{ fontWeight: 'bold' }}>Available Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -565,20 +572,26 @@ function Team() {
               </TableBody>
             </Table>
           </TableContainer>
+
         </Box>
 
         <br />
+
         <Typography variant="h6" gutterBottom>
           Invite a New Team Member
         </Typography>
         <Typography className="description">
-            <p>Members can access the API. Admin users can modify the team settings (including the subscription and adding/removing members to/from the team). Owners inherit all Admin permissions and can also delete the team.</p>
+            <p>Members can create API Keys to access the API. Admin users can modify the team settings (including the name, subscription, or adding/removing members to/from the team). Owners inherit all Admin permissions and can also delete the team.</p>
         </Typography>
+
         {id && <InviteUserList isOwner={true} teamId={id} onComplete={() => { reloadInvitationList() }}></InviteUserList>}
+      
       </Box>
 
       <Box>
+
         {activeTeam?.is_owner && <Button variant="contained" color='error' onClick={initDeleteTeam}>Delete Team</Button>}
+      
       </Box>
       <Snackbar
         open={snackbarOpen}
