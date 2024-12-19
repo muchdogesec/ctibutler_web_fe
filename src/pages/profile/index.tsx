@@ -155,7 +155,7 @@ const UserProfile = () => {
     }
 
     useEffect(() => {
-        document.title = 'Account Settings | Ctibutler Web'
+        document.title = 'Account Settings | CTI Butler Web'
     }, [])
 
     const handleCloseDisable2FAModal = (disabled: boolean) => {

@@ -104,7 +104,7 @@ function Team() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    document.title = 'Team Settings | Ctibutler Web'
+    document.title = 'Team Settings | CTI Butler Web'
   }, [])
 
 

@@ -77,7 +77,7 @@ const UserManagement = () => {
     };
 
     useEffect(() => {
-        document.title = 'Manage User | Ctibutler Web'
+        document.title = 'Manage User | CTI Butler Web'
     }, [])
 
     return (

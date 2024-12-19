@@ -7,7 +7,7 @@ import TeamList from "../teams/teams.tsx";
 
 function AdminTeams() {
   useEffect(() => {
-    document.title = 'Manage Teams | Ctibutler Web'
+    document.title = 'Manage Teams | CTI Butler Web'
   }, [])
 
   return (

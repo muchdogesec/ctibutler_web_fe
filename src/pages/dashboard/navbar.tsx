@@ -84,7 +84,7 @@ const NavBar = () => {
 
             <Toolbar sx={{ background: '#0073ec' }}>
                 <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
-                    Ctibutler
+                    CTI Butler
                 </Typography>
                 {user?.metadata_is_staff && <StaffPopover></StaffPopover>}
                 {user ? (

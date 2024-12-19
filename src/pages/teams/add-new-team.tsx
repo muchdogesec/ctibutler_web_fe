@@ -21,7 +21,7 @@ function AddNewTeam() {
 
 
   useEffect(() => {
-    document.title = 'Add a New Team | Ctibutler Web'
+    document.title = 'Add a New Team | CTI Butler Web'
   }, [])
 
   return (
