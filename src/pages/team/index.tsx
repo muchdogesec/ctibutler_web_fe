@@ -289,15 +289,16 @@ function Team() {
   return (
     <Container>
       <Box my={4}>
-        <Box sx={{ display: 'flex' }}>
-          <Typography sx={{ flex: 'auto' }} variant="h4" gutterBottom>
+          <Typography variant="h4" gutterBottom>
             Team Management
           </Typography>
           <Typography className="description">
             <p>Use this page to view information about your team. Only a team owner or a team admin can make changes.</p>
           </Typography>
           <Typography variant="h5">Team Details</Typography>
-        </Box>
+          <Typography className="description">
+            <p>Your team ID, name, and description is only visible to members of this team and those that are invited to join the team.</p>
+          </Typography>
         <Grid container spacing={2}>
         </Grid>
         <Dialog open={openInvite} onClose={handleCloseInvite}>
@@ -359,8 +360,6 @@ function Team() {
           </DialogActions>
         </Dialog>
 
-
-
         <Box sx={{ paddingTop: '3rem' }}>
           <TeamManagement
             onClose={() => setDisableEdit(true)}
@@ -371,12 +370,24 @@ function Team() {
           />
           {disableEdit && <Button color="success" variant="contained" onClick={() => setDisableEdit(false)}>Edit</Button>}
         </Box>
-        <Box mt={4}>
-          <Typography variant="h5" gutterBottom>
-            Subscription
-          </Typography>
-          <TableContainer component={Paper} sx={{ marginTop: '2rem' }}>
 
+        <Box mt={4}>
+
+          <Typography variant="h5" gutterBottom>
+            Team Subscription
+          </Typography>
+          <Typography className="description">
+            <p>By default you will be subsribed to free plan with no API access. In order to use the API you must upgrade to a paid plan.</p>
+          </Typography>
+
+          <Typography variant="h6" gutterBottom>
+            Current Plan
+          </Typography>
+          <Typography className="description">
+            <p>This table shows details of the plan you are subscribed too. To change or cancel you can modify your subscription by clicking the button below.</p>
+          </Typography>
+
+          <TableContainer component={Paper} sx={{ marginTop: '2rem' }}>
             <Table>
               <TableHead>
                 <TableRow>
@@ -386,24 +397,31 @@ function Team() {
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell style={{ fontWeight: 'bold', marginRight: '2rem' }}>Product name:</TableCell>
+                  <TableCell>Product name</TableCell>
                   <TableCell>{activeSubscription?.items[0].price.product_name}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell style={{ fontWeight: 'bold', marginRight: '2rem' }}>Cost:</TableCell>
+                  <TableCell>Cost</TableCell>
                   <TableCell>{activeSubscription?.items[0].price.payment_amount}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell style={{ fontWeight: 'bold', marginRight: '2rem' }}>Next Billing Date:</TableCell>
+                  <TableCell>Next Billing Date</TableCell>
                   <TableCell>{getSubscriptionNextBillingDate()}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell style={{ fontWeight: 'bold', marginRight: '2rem' }}>Subscription Status:</TableCell>
+                  <TableCell>Subscription Status</TableCell>
                   <TableCell sx={{ textTransform: 'capitalize' }}>{activeSubscription?.status || 'No subscription'}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
+
+          <Typography variant="h6" gutterBottom>
+            Plan Limits
+          </Typography>
+          <Typography className="description">
+            <p>This table shows the limits of the plan you are currently subscribed to. If you want to change these limits you can modify your subscription by clicking the button below.</p>
+          </Typography>
 
           <TableContainer component={Paper} sx={{ marginTop: '2rem' }}>
             <Table>
@@ -435,14 +453,20 @@ function Team() {
             </Table>
           </TableContainer>
           <Button sx={{ marginTop: '1rem' }} onClick={handleSubscriptionDetail} variant="contained">Modify Subscription</Button>
+
         </Box>
 
 
         <Box mt={4}>
-          <Typography variant="h6" gutterBottom>
-            Members
+          <Typography variant="h5" gutterBottom>
+            Team Members
           </Typography>
-          <Typography>You can manage roles of your team. There must always be one Owner of the team.</Typography>
+          <Typography className="description">
+            <p>This table shows all active team members and their roles. Admins or owners can modify the roles of an existing user. There must always be one Owner of the team.</p>
+          </Typography>
+          <Typography variant="h6" gutterBottom>
+            Current Team Members
+          </Typography>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -490,7 +514,10 @@ function Team() {
 
         <Box mt={4}>
           <Typography variant="h6" gutterBottom>
-            Invited Users
+            Pending Invites
+          </Typography>
+          <Typography className="description">
+            <p>This shows invitations sent out that are yet to be responded to. Once an invitation is accepted or rejected by the user, or revoked by a team admin or owner it will disappear from this table.</p>
           </Typography>
           <TableContainer component={Paper}>
             <Table>
@@ -541,8 +568,12 @@ function Team() {
         </Box>
 
         <br />
-        <Typography>Invite User</Typography>
-        <Typography>Members can access the API. Owners inherit all Admin permissions and can also delete the team.</Typography>
+        <Typography variant="h6" gutterBottom>
+          Invite a New Team Member
+        </Typography>
+        <Typography className="description">
+            <p>Members can access the API. Admin users can modify the team settings (including the subscription and adding/removing members to/from the team). Owners inherit all Admin permissions and can also delete the team.</p>
+        </Typography>
         {id && <InviteUserList isOwner={true} teamId={id} onComplete={() => { reloadInvitationList() }}></InviteUserList>}
       </Box>
 
