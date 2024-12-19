@@ -293,6 +293,10 @@ function Team() {
           <Typography sx={{ flex: 'auto' }} variant="h4" gutterBottom>
             Team Management
           </Typography>
+          <Typography className="description">
+            <p>Use this page to view information about your team. Only a team owner or a team admin can make changes.</p>
+          </Typography>
+          <Typography variant="h5">Team Details</Typography>
         </Box>
         <Grid container spacing={2}>
         </Grid>
@@ -368,7 +372,7 @@ function Team() {
           {disableEdit && <Button color="success" variant="contained" onClick={() => setDisableEdit(false)}>Edit</Button>}
         </Box>
         <Box mt={4}>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h5" gutterBottom>
             Subscription
           </Typography>
           <Box sx={{ display: 'flex' }}>
