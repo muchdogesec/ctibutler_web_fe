@@ -470,6 +470,7 @@ function Team() {
           </Typography>
           <Typography className="description">
             <p>This table shows all active team members and their roles. Admins or owners can modify the roles of an existing user. There must always be one Owner of the team.</p>
+            <p>Members can create API Keys to access the API. Admin users can modify the team settings (including the name, subscription, or adding/removing members to/from the team). Owners inherit all Admin permissions and can also delete the team</p>
           </Typography>
 
           <TableContainer component={Paper}>
@@ -567,7 +568,7 @@ function Team() {
                 ) : (
                   <TableRow>
                     <TableCell colSpan={4} align="center">
-                      No invited users
+                      No pending invites
                     </TableCell>
                   </TableRow>
                 )}
