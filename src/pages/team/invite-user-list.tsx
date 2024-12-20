@@ -88,7 +88,7 @@ function InviteUserList({ teamId, onComplete, isOwner }: InviteUserListProps) {
                 ></InviteUserLine>
             ))}
             <Box sx={{ color: 'red' }}>{error}</Box>
-            <Button variant="contained" sx={{ marginRight: '1rem' }} onClick={() => addNewLine()}> Add new </Button>
+            <Button variant="contained" sx={{ marginRight: '1rem' }} onClick={() => addNewLine()}> + Add new row</Button>
             <LoadingButton variant="contained" isLoading={loading} onClick={() => sendInvites()}> Send invites </LoadingButton>
         </Box>
     );

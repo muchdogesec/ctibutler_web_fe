@@ -4,9 +4,9 @@ export interface ITeam {
     id: string;
     name: string;
     description: string;
-    is_admin: string;
-    is_owner: string;
-    is_private: string;
+    is_admin: boolean;
+    is_owner: boolean;
+    is_private: boolean;
     owner_id: number;
     allowed_api_access: boolean;
     allowed_data_download: boolean;

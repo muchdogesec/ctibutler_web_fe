@@ -16,9 +16,9 @@ export const ChangeRoleDialog = ({ teamId, member, open, onClose, isOwner, onRol
             onRoleChanged()
             onClose()
         } catch (err) {
-            if (err?.response?.status === 400) {
+            if ([400, 403].includes(err?.response?.status)) {
                 onClose()
-                return alert.showAlert(err?.response?.data[0])
+                return alert.showAlert(err?.response?.data[0] || err?.response?.data?.detail)
             }
             throw err
         }
