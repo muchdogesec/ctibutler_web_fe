@@ -26,6 +26,7 @@ import { AdminTeam, ITeam } from "../../services/types.ts";
 import Invitations from "./invitations.tsx";
 import { URLS } from "../../services/urls.ts";
 import { useAlert } from "../../contexts/alert-context.tsx";
+import AddTeamDialog from "../dashboard/new-team.tsx";
 
 const ConfirmLeaveTeamDialog = ({ open, onClose, team }: {
   open: boolean, onClose: (reload: boolean) => void, team?: ITeam
@@ -78,6 +79,7 @@ function TeamList({ isAdmin }: TeamListProps) {
   const [totalResultsCount, setTotalResultsCount] = useState(0);
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState("");
+  const [showAddTeam, setShowAddTeam] = useState(false)
 
   async function loadTeams() {
     try {
@@ -141,11 +143,9 @@ function TeamList({ isAdmin }: TeamListProps) {
         </>
         )}
         {!isAdmin &&
-          <Link to={URLS.addTeam()}>
-            <Button variant="contained" color="primary">
+            <Button onClick={() => setShowAddTeam(true)} variant="contained" color="primary">
               Add New Team
             </Button>
-          </Link>
         }
 
 
@@ -250,6 +250,7 @@ function TeamList({ isAdmin }: TeamListProps) {
           />}
         </TableContainer>
         {selectedTeam && <ConfirmLeaveTeamDialog open={showLeaveTeamDialog} onClose={closeLeaveTeamDialog} team={selectedTeam}></ConfirmLeaveTeamDialog>}
+        <AddTeamDialog onClose={() => setShowAddTeam(false)} open={showAddTeam}></AddTeamDialog>
       </Box>
     </ >
   );
