@@ -13,9 +13,10 @@ interface TeamManagementProps {
   onTeamUpdated: (id: string) => void;
   isAdmin: boolean;
   disabled: boolean;
+  isDialog?: boolean;
 }
 
-function TeamManagement({ onClose, team, onTeamUpdated, isAdmin, disabled }: TeamManagementProps) {
+function TeamManagement({ onClose, team, onTeamUpdated, isAdmin, disabled, isDialog = false }: TeamManagementProps) {
   const [teamName, setTeamName] = useState("");
   const [teamNameError, setTeamNameError] = useState("");
   const [teamDescription, setTeamDescription] = useState("");
@@ -96,18 +97,27 @@ function TeamManagement({ onClose, team, onTeamUpdated, isAdmin, disabled }: Tea
         value={teamDescription}
         onChange={(e) => setTeamDescription(e.target.value)}
       />
-      {/* <Button onClick={onClose} color="primary">
-        Cancel
-      </Button> */}
-      {!disabled && (
-        <>
-          <LoadingButton variant="contained" onClick={handleSave} color="primary" isLoading={loading}>
+      {isDialog ? (
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '2rem' }}>
+          <Button onClick={onClose} variant='contained' color='error' onClick={onClose}>
+            Cancel
+          </Button>
+          <LoadingButton sx={{ marginLeft: '1rem' }} variant="contained" onClick={handleSave} color="primary" isLoading={loading}>
             {team?.id ? "Save changes" : "Create team"}
           </LoadingButton>
-          {team?.id && (<Button onClick={onClose} variant="contained" color="error" sx={{ marginLeft: '2rem' }} > Cancel </Button>)}
-        </>
-      )
-      }
+        </Box>
+      ) : (<>
+        {!disabled && (
+          <>
+            <LoadingButton variant="contained" onClick={handleSave} color="primary" isLoading={loading}>
+              {team?.id ? "Save changes" : "Create team"}
+            </LoadingButton>
+            {team?.id && (<Button onClick={onClose} variant="contained" color="error" sx={{ marginLeft: '2rem' }} > Cancel </Button>)}
+          </>
+        )
+        }</>
+      )}
+
     </Box >
   );
 }

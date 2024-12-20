@@ -10,6 +10,7 @@ import StaffPopover from './staff-popover.tsx';
 import { TeamContext } from '../../contexts/team-context.tsx';
 import { ITeam } from '../../services/types.ts';
 import { URLS } from '../../services/urls.ts';
+import AddTeamDialog from './new-team.tsx';
 
 const drawerWidth = 240;
 
@@ -21,6 +22,7 @@ const NavBar = () => {
     const [teams, setTeams] = useState<ITeam[]>([]);
     const navigate = useNavigate()
     const [loading, setLoading] = useState(true);
+    const [showAddTeam, setShowAddTeam] = useState(false)
 
     async function reloadTeams() {
         const res = await Api.fetchTeams(0, '');
@@ -96,13 +98,14 @@ const NavBar = () => {
                             {teams.map((team) => (
                                 <MenuItem onClick={() => changeTeam(team)} key={team.id} value={team.id}>{team.is_private ? 'Account Settings' : team.name}</MenuItem>
                             ))}
-                            <MenuItem><Link to={URLS.addTeam()} style={{ textDecoration: 'none', color: 'unset' }}>+ Create a new Team</Link></MenuItem>
+                            <MenuItem onClick={() => setShowAddTeam(true)}>+ Create a new Team</MenuItem>
                         </Select>
 
                         <UserPopover userEmail={user?.name || ''}></UserPopover>
                     </>
                 ) : (<></>)}
             </Toolbar>
+            <AddTeamDialog onClose={() => setShowAddTeam(false)} open={showAddTeam}></AddTeamDialog>
         </AppBar >
     );
 };
