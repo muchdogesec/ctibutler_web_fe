@@ -383,15 +383,12 @@ function Team() {
           <Typography variant="h5" gutterBottom>
             Team Subscription
           </Typography>
-          <Typography className="description">
-            <p>By default you will be subsribed to free plan with no API access. In order to use the API you must upgrade to a paid plan.</p>
-          </Typography>
 
           <Typography variant="h6" gutterBottom>
             Current Plan
           </Typography>
           <Typography className="description">
-            <p>This table shows details of the plan you are subscribed too. To change or cancel you can modify your subscription by clicking the button below.</p>
+            <p>This table shows details of the plan you are subscribed to. To change or cancel you can modify your subscription by clicking the button below.</p>
           </Typography>
 
           <TableContainer component={Paper} sx={{ marginTop: '2rem' }}>
@@ -467,11 +464,12 @@ function Team() {
           <Typography variant="h5" gutterBottom>
             Team Members
           </Typography>
-          <Typography className="description">
-            <p>This table shows all active team members and their roles. Admins or owners can modify the roles of an existing user. There must always be one Owner of the team.</p>
-          </Typography>
+
           <Typography variant="h6" gutterBottom>
             Current Team Members
+          </Typography>
+          <Typography className="description">
+            <p>This table shows all active team members and their roles. Admins or owners can modify the roles of an existing user. There must always be one Owner of the team.</p>
           </Typography>
 
           <TableContainer component={Paper}>
