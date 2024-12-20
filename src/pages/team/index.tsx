@@ -47,9 +47,9 @@ const ConfirmRemoveMemberDialog = ({ teamId, open, onClose, member }: {
       await Api.removeTeamMember(teamId, member.user_id)
       onClose(true)
     } catch (err) {
-      if (err?.response?.status === 400) {
+      if ([400, 403].includes(err?.response?.status)) {
         onClose(false)
-        return alert.showAlert(err?.response?.data[0])
+        return alert.showAlert(err?.response?.data[0] || err?.response?.data?.detail)
       }
       throw err
     }
@@ -87,6 +87,7 @@ function Team() {
   const [loadingSave, setLoadingSave] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false);
   const [activeTeam, setActiveTeam] = useState<ITeam | null>(null);
+  const [activeUserIsAdmin, setActiveUserIsAdmin] = useState(false)
 
   const [openCancelMembership, setOpenCancelMembership] = useState(false);
   const [openCancelInvitation, setOpenCancelInvitation] = useState(false);
@@ -161,6 +162,7 @@ function Team() {
     try {
       const result = await Api.fetchTeamLimits(id)
       setActiveTeam(result.data)
+      setActiveUserIsAdmin(result.data.is_admin)
     } catch (err) {
       if (err?.response?.status === 403 || err?.response?.status === 404) {
         navigate(URLS.profile())
@@ -291,17 +293,17 @@ function Team() {
 
       <Box my={4}>
 
-          <Typography variant="h4" gutterBottom>
-            Team Management
-          </Typography>
-          <Typography className="description">
-            <p>Use this page to view information about your team. Only a team owner or a team admin can make changes.</p>
-          </Typography>
+        <Typography variant="h4" gutterBottom>
+          Team Management
+        </Typography>
+        <Typography className="description">
+          <p>Use this page to view information about your team. Only a team owner or a team admin can make changes.</p>
+        </Typography>
 
-          <Typography variant="h5">Team Details</Typography>
-          <Typography className="description">
-            <p>Your team ID, name, and description is only visible to members of this team and those that are invited to join the team.</p>
-          </Typography>
+        <Typography variant="h5">Team Details</Typography>
+        <Typography className="description">
+          <p>Your team ID, name, and description is only visible to members of this team and those that are invited to join the team.</p>
+        </Typography>
 
         <Grid container spacing={2}>
         </Grid>
@@ -372,7 +374,7 @@ function Team() {
             isAdmin={false}
             disabled={disableEdit}
           />
-          {disableEdit && <Button color="success" variant="contained" onClick={() => setDisableEdit(false)}>Edit</Button>}
+          {activeUserIsAdmin && disableEdit && <Button color="success" variant="contained" onClick={() => setDisableEdit(false)}>Edit</Button>}
 
         </Box>
 
@@ -456,7 +458,7 @@ function Team() {
               </TableBody>
             </Table>
           </TableContainer>
-          <Button sx={{ marginTop: '1rem' }} onClick={handleSubscriptionDetail} variant="contained">Modify Subscription</Button>
+          {activeUserIsAdmin && <Button sx={{ marginTop: '1rem' }} onClick={handleSubscriptionDetail} variant="contained">Modify Subscription</Button>}
 
         </Box>
 
@@ -497,10 +499,12 @@ function Team() {
                       <TableCell>{member.display_name}</TableCell>
                       <TableCell>{getRole(member)}</TableCell>
                       <TableCell>
-                        <Button variant="contained" onClick={() => initChangeRole(member)}>Change role</Button>
-                        <Button sx={{ marginLeft: '2rem' }} variant="contained" color="error" onClick={() => initConfirmRemove(member)}>
-                          {user?.email === member.email ? 'Leave' : 'Remove'}
-                        </Button>
+                        {activeUserIsAdmin && <Button variant="contained" onClick={() => initChangeRole(member)}>Change role</Button>}
+                        {activeUserIsAdmin || (user?.email === member.email) &&
+                          <Button sx={{ marginLeft: '2rem' }} variant="contained" color="error" onClick={() => initConfirmRemove(member)}>
+                            {user?.email === member.email ? 'Leave' : 'Remove'}
+                          </Button>
+                        }
                       </TableCell>
                     </TableRow>
                   ))
@@ -576,22 +580,22 @@ function Team() {
         </Box>
 
         <br />
-
-        <Typography variant="h6" gutterBottom>
-          Invite a New Team Member
-        </Typography>
-        <Typography className="description">
+        {activeUserIsAdmin && (<>
+          <Typography variant="h6" gutterBottom>
+            Invite a New Team Member
+          </Typography>
+          <Typography className="description">
             <p>Members can create API Keys to access the API. Admin users can modify the team settings (including the name, subscription, or adding/removing members to/from the team). Owners inherit all Admin permissions and can also delete the team.</p>
-        </Typography>
+          </Typography>
 
-        {id && <InviteUserList isOwner={true} teamId={id} onComplete={() => { reloadInvitationList() }}></InviteUserList>}
-      
+          {id && <InviteUserList isOwner={true} teamId={id} onComplete={() => { reloadInvitationList() }}></InviteUserList>}
+        </>)}
       </Box>
 
       <Box>
 
         {activeTeam?.is_owner && <Button variant="contained" color='error' onClick={initDeleteTeam}>Delete Team</Button>}
-      
+
       </Box>
       <Snackbar
         open={snackbarOpen}
