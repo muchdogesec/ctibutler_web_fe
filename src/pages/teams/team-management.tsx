@@ -102,14 +102,14 @@ function TeamManagement({ onClose, team, onTeamUpdated, isAdmin, disabled, isDia
           <Button onClick={onClose} variant='contained' color='error' onClick={onClose}>
             Cancel
           </Button>
-          <LoadingButton sx={{ marginLeft: '1rem' }} variant="contained" onClick={handleSave} color="primary" isLoading={loading}>
+          <LoadingButton sx={{ marginLeft: '1rem' }} variant="contained" disabled={(teamName?.length || 0) <= 5} onClick={handleSave} color="primary" isLoading={loading}>
             {team?.id ? "Save changes" : "Create team"}
           </LoadingButton>
         </Box>
       ) : (<>
         {!disabled && (
           <>
-            <LoadingButton variant="contained" onClick={handleSave} color="primary" isLoading={loading}>
+            <LoadingButton variant="contained" onClick={handleSave} disabled={(teamName?.length || 0) <= 5} color="primary" isLoading={loading}>
               {team?.id ? "Save changes" : "Create team"}
             </LoadingButton>
             {team?.id && (<Button onClick={onClose} variant="contained" color="error" sx={{ marginLeft: '2rem' }} > Cancel </Button>)}

@@ -63,10 +63,6 @@ const router = createBrowserRouter([
         Component: UserProfile,
       },
       {
-        path: "teams/add",
-        Component: AddNewTeam,
-      },
-      {
         path: "",
         Component: TeamLayout,
         children: [

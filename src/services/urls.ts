@@ -1,6 +1,5 @@
 export const URLS = {
     profile: () => '/user/account',
-    addTeam: () => '/teams/add',
 
     staffUserList: () => '/staff/manage-users',
     staffUserListWithEmailQuery: (userEmail: string) => `/staff/manage-users?email=${userEmail}`,
