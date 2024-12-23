@@ -57,7 +57,7 @@ const ConfirmRemoveMemberDialog = ({ teamId, open, onClose, member }: {
   }
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Error</DialogTitle>
+      <DialogTitle>Remove Member</DialogTitle>
       <DialogContent>
         <Typography>Are you sure you want to remove {member?.display_name}</Typography>
       </DialogContent>
@@ -587,7 +587,12 @@ function Team() {
             <p>Members can create API Keys to access the API. Admin users can modify the team settings (including the name, subscription, or adding/removing members to/from the team). Owners inherit all Admin permissions and can also delete the team.</p>
           </Typography>
 
-          {id && <InviteUserList isOwner={true} teamId={id} onComplete={() => { reloadInvitationList() }}></InviteUserList>}
+          {activeTeam && <InviteUserList
+            isOwner={true}
+            teamId={activeTeam.id}
+            onComplete={() => { reloadInvitationList() }}
+            noOfFreeSlots={activeTeam?.user_limit - activeTeam?.members_count - activeTeam?.invitations_count}
+          ></InviteUserList>}
         </>)}
       </Box>
 

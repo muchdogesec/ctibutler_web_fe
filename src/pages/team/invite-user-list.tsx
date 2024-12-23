@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Box,
     Button,
@@ -12,10 +12,12 @@ interface InviteUserListProps {
     teamId: string;
     onComplete: () => void;
     isOwner: boolean;
+    noOfFreeSlots: number;
 }
 
-function InviteUserList({ teamId, onComplete, isOwner }: InviteUserListProps) {
+function InviteUserList({ teamId, onComplete, isOwner, noOfFreeSlots }: InviteUserListProps) {
     const [loading, setLoading] = useState(false)
+    const [emailsValidity, setEmailsValidity] = useState<boolean[]>([false])
     const [invites, setInvites] = useState<{
         role: string,
         email: string,
@@ -24,10 +26,15 @@ function InviteUserList({ teamId, onComplete, isOwner }: InviteUserListProps) {
     const alert = useAlert()
 
     const addNewLine = () => {
+        setEmailsValidity(emailsValidity => ([...emailsValidity, false]))
         setInvites(invites => ([...invites, { role: 'member', email: '' }]))
     }
 
     const onItemChanged = (index: number, field: string, value: string) => {
+        let isValid = false
+        if (validateEmail(value)) {
+            isValid = true
+        }
         setInvites(invites => {
             return [
                 ...invites.slice(0, index),
@@ -35,6 +42,11 @@ function InviteUserList({ teamId, onComplete, isOwner }: InviteUserListProps) {
                 ...invites.slice(index + 1)
             ]
         })
+        setEmailsValidity(emailsValidity => ([
+            ...emailsValidity.slice(0, index),
+            isValid,
+            ...emailsValidity.slice(index + 1)
+        ]))
     }
 
     const onRemove = (index: number) => {
@@ -79,7 +91,7 @@ function InviteUserList({ teamId, onComplete, isOwner }: InviteUserListProps) {
     }
     return (
         <Box>
-            {invites.map((item, index) => (
+            {noOfFreeSlots > 0 && invites.map((item, index) => (
                 <InviteUserLine key={index} email={item.email} role={item.role}
                     onEmailChanged={(email) => onItemChanged(index, 'email', email)}
                     onRoleChanged={(role) => onItemChanged(index, 'role', role)}
@@ -88,8 +100,12 @@ function InviteUserList({ teamId, onComplete, isOwner }: InviteUserListProps) {
                 ></InviteUserLine>
             ))}
             <Box sx={{ color: 'red' }}>{error}</Box>
-            <Button sx={{ marginRight: '1rem', textTransform: 'none' }} onClick={() => addNewLine()}> + Add new row</Button><br/>
-            <LoadingButton variant="contained" isLoading={loading} onClick={() => sendInvites()}> Send invites </LoadingButton>
+            {invites.length < noOfFreeSlots ? <>
+                <Button sx={{ marginRight: '1rem', textTransform: 'none' }} onClick={() => addNewLine()}> + Add new row</Button>
+            </> : <span>You have no remaining seats in your team, please upgrade your subscription to add more seats.</span>}
+
+            <br /><br />
+            {noOfFreeSlots > 0 && <LoadingButton disabled={emailsValidity.findIndex(validity => !validity) > -1} variant="contained" isLoading={loading} onClick={() => sendInvites()}> Send invites </LoadingButton>}
         </Box>
     );
 }
