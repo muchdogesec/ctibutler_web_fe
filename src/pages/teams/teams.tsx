@@ -50,7 +50,7 @@ const ConfirmLeaveTeamDialog = ({ open, onClose, team }: {
   }
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Error</DialogTitle>
+      <DialogTitle>Leave Team</DialogTitle>
       <DialogContent>
         <Typography>Are you sure you want to leave {team?.name}</Typography>
       </DialogContent>
@@ -125,6 +125,10 @@ function TeamList({ isAdmin }: TeamListProps) {
     }
     return false
   }
+
+  const showTeamLink = (team: ITeam) => {
+    return !team?.is_private
+  }
   return (
     <>
       <Box my={4}>
@@ -143,9 +147,9 @@ function TeamList({ isAdmin }: TeamListProps) {
         </>
         )}
         {!isAdmin &&
-            <Button onClick={() => setShowAddTeam(true)} variant="contained" color="primary">
-              Add New Team
-            </Button>
+          <Button onClick={() => setShowAddTeam(true)} variant="contained" color="primary">
+            Add New Team
+          </Button>
         }
 
 
@@ -190,7 +194,9 @@ function TeamList({ isAdmin }: TeamListProps) {
               ) : (
                 teams.filter(team => !team.is_private).map((team, index) => (
                   <TableRow key={team.id} sx={{ backgroundColor: limitExceeded(team) ? 'pink' : 'transparent' }}>
-                    <TableCell>{team.name}</TableCell>
+                    <TableCell>
+                      {showTeamLink(team) ? (<Link to={URLS.teamManagement(team.id)}>{team.name}</Link>) : <>{team.name}</>}
+                    </TableCell>
                     <TableCell>{team.description}</TableCell>
                     {!isAdmin && <TableCell>{getRole(team)}</TableCell>}
                     {isAdmin && <TableCell>{team.is_private ? 'Personal' : 'User Created'}</TableCell>}
@@ -204,18 +210,6 @@ function TeamList({ isAdmin }: TeamListProps) {
                     <TableCell>{team.subscription?.items[0].price.product_name || 'No Active Plan'}</TableCell>
                     <TableCell>{team.subscription?.status}</TableCell>
                     <TableCell>
-                      {(isAdmin || team.is_admin) ? (<>
-
-                        {!team.is_private && (
-                          <Link to={URLS.teamManagement(team.id)}>
-                            <Button variant="contained" color="secondary" sx={{ ml: 1 }}>
-                              Manage
-                            </Button>
-                          </Link>
-                        )}
-
-                      </>
-                      ) : (<div></div>)}
 
 
                       {!isAdmin && (
