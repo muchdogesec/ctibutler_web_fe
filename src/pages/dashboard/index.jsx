@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, Box } from '@mui/material';
-import { Group, DocumentScanner } from '@mui/icons-material';
+import { Group, DocumentScanner, Support } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import NavBar from './navbar.tsx';
@@ -55,7 +55,7 @@ const DashboardLayout = () => {
           </Toolbar>
           <Divider />
           <List>
-            {!activeTeam || !activeTeam?.is_private && (<>
+            {(<>
               <ListItem button component={NavLink} to={CTIBUTLER_API_SWAGGER_URL}>
                 <ListItemIcon><DocumentScanner></DocumentScanner></ListItemIcon>
                 <ListItemText primary="API Documentation" />
@@ -66,6 +66,10 @@ const DashboardLayout = () => {
                   <ListItemText primary="Team Management" />
                 </ListItem>
               )}
+              <ListItem button component={NavLink} to="https://support.dogesec.com/">
+                <ListItemIcon><Support /></ListItemIcon>
+                <ListItemText primary="Support" />
+              </ListItem>
             </>)}
           </List>
         </Drawer>

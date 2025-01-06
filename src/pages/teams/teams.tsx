@@ -127,7 +127,7 @@ function TeamList({ isAdmin }: TeamListProps) {
   }
 
   const showTeamLink = (team: ITeam) => {
-    return !team?.is_private
+    return true
   }
   return (
     <>
@@ -192,7 +192,7 @@ function TeamList({ isAdmin }: TeamListProps) {
                   </TableCell>
                 </TableRow>
               ) : (
-                teams.filter(team => !team.is_private).map((team, index) => (
+                teams.map((team, index) => (
                   <TableRow key={team.id} sx={{ backgroundColor: limitExceeded(team) ? 'pink' : 'transparent' }}>
                     <TableCell>
                       {showTeamLink(team) ? (<Link to={URLS.teamManagement(team.id)}>{team.name}</Link>) : <>{team.name}</>}
