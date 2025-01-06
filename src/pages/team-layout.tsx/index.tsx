@@ -37,7 +37,6 @@ const TeamLayout = () => {
 
   const loadLimits = async () => {
     if (!id || id === "undefined") return
-    if (team?.is_private) navigate(URLS.profile())
     try {
       const res = await Api.fetchTeamLimits(id)
       setTeam(res.data)
