@@ -36,7 +36,7 @@ const NavBar = () => {
         if (selectedTeam) {
             setSelectedTeamId(selectedTeam.id)
         } else {
-            setSelectedTeamId(teams[0].id)
+            setSelectedTeamId("account")
         }
     }, [activeTeam, teams])
 
@@ -91,6 +91,7 @@ const NavBar = () => {
                             style={{ color: 'white', height: '60px', border: 'none' }}
                             value={selectedTeamId}
                         >
+                            <MenuItem onClick={() => navigate(URLS.profile())} key="account" value={"account"}>Account Settings</MenuItem>
                             {teams.map((team) => (
                                 <MenuItem onClick={() => changeTeam(team)} key={team.id} value={team.id}>{team.name}</MenuItem>
                             ))}
