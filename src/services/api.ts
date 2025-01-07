@@ -167,6 +167,10 @@ const getMembers = async (teamId: string) => {
     return apiRequest<any>('GET', `/teams/api/teams/${teamId}/members/`);
 };
 
+const resendInvite = async (teamId: string, memberId: string) => {
+    return apiRequest<any>('POST', `/teams/api/teams/${teamId}/invitations/${memberId}/resend-invite/`, {});
+};
+
 const getInvitedMembers = async (teamId: string) => {
     return apiRequest<Paginated<any[]>>('GET', `/teams/api/teams/${teamId}/invitations/?is_accepted=false`);
 };
@@ -386,4 +390,5 @@ export const Api = {
     createApiKey,
     bulkInviteUser,
     resendEmailVerificationEmail,
+    resendInvite,
 };

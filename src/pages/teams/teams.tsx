@@ -98,7 +98,6 @@ function TeamList({ isAdmin }: TeamListProps) {
   }, [page, search]);
 
   const getRole = (team: ITeam) => {
-    if (team.is_private) return 'Personal space'
     if (team.is_owner) return 'Owner'
     if (team.is_admin) return 'Admin'
     return 'Member'

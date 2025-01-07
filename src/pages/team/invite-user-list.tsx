@@ -100,7 +100,7 @@ function InviteUserList({ teamId, onComplete, isOwner, noOfFreeSlots }: InviteUs
                 ></InviteUserLine>
             ))}
             <Box sx={{ color: 'red' }}>{error}</Box>
-            {invites.length < noOfFreeSlots ? <>
+            {noOfFreeSlots > 0 ? <>
                 <Button sx={{ marginRight: '1rem', textTransform: 'none' }} onClick={() => addNewLine()}> + Add new row</Button>
             </> : <span>You have no remaining seats in your team, please upgrade your subscription to add more seats.</span>}
 

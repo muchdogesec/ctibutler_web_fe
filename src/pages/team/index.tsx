@@ -101,6 +101,7 @@ function Team() {
   const [selectedMember, setSelectedMember] = useState<Member>()
   const [openChangeRole, setOpenChangeRole] = useState(false)
   const [opeDeleteTeam, setOpenDeleteTeam] = useState(false)
+  const alert = useAlert()
 
   const navigate = useNavigate()
 
@@ -156,6 +157,11 @@ function Team() {
       setLoading(false);
     }
   };
+
+  const handleResendInvitation = async (invitationId: string) => {
+    const res = await Api.resendInvite(id || '', invitationId)
+    alert.showAlert("Invite resent successfully")
+  }
 
   const loadTeam = async () => {
     if (!id) return
@@ -562,6 +568,9 @@ function Team() {
                             setOpenCancelInvitation(true);
                           }}
                         >Revoke</Button>
+                        <Button variant='contained' sx={{ marginLeft: '2rem' }} onClick={() => handleResendInvitation(invitation.id)} color="primary">
+                          Resend
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))
