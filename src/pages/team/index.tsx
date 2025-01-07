@@ -161,6 +161,7 @@ function Team() {
   const handleResendInvitation = async (invitationId: string) => {
     const res = await Api.resendInvite(id || '', invitationId)
     alert.showAlert("Invite resent successfully")
+    getInvitedMembers()
   }
 
   const loadTeam = async () => {
@@ -541,6 +542,7 @@ function Team() {
                 <TableRow>
                   <TableCell style={{ fontWeight: 'bold' }}>Email</TableCell>
                   <TableCell style={{ fontWeight: 'bold' }}>Role</TableCell>
+                  <TableCell style={{ fontWeight: 'bold' }}>Date Last Invite Sent</TableCell>
                   <TableCell style={{ fontWeight: 'bold' }}>Available Actions</TableCell>
                 </TableRow>
               </TableHead>
@@ -559,6 +561,7 @@ function Team() {
                     <TableRow key={invitation.id}>
                       <TableCell>{invitation.email}</TableCell>
                       <TableCell>{invitation.role}</TableCell>
+                      <TableCell>{getDateString(invitation.last_email_date)}</TableCell>
                       <TableCell>
                         <Button
                           color="error"

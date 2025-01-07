@@ -18,7 +18,7 @@ const ErrorDialog = ({ open, onClose, errorMessage, onResendClicked }) => {
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Error</DialogTitle>
+      <DialogTitle> Verify Email</DialogTitle>
       <DialogContent>
         <Typography>{errorMessage}</Typography>
       </DialogContent>
