@@ -151,7 +151,6 @@ function TeamList({ isAdmin }: TeamListProps) {
           </Button>
         }
 
-
         {isAdmin && <Box sx={{ display: 'flex', justifyContent: 'right' }}>
           <TextField
             sx={{ maxWidth: '200px' }}
@@ -209,18 +208,14 @@ function TeamList({ isAdmin }: TeamListProps) {
                     <TableCell>{team.subscription?.items[0].price.product_name || 'No Active Plan'}</TableCell>
                     <TableCell>{team.subscription?.status}</TableCell>
                     <TableCell>
-
-
-                      {!isAdmin && (
+                      <Link to={URLS.teamManagement(team.id)}>
                         <Button
                           variant="contained"
-                          color="error"
                           sx={{ ml: 1 }}
-                          onClick={() => handleOpenLeaveTeamModal(team)}
                         >
-                          Leave
+                          Manage
                         </Button>
-                      )}
+                      </Link>
                     </TableCell>
                   </TableRow>
                 ))

@@ -101,6 +101,7 @@ function Team() {
   const [selectedMember, setSelectedMember] = useState<Member>()
   const [openChangeRole, setOpenChangeRole] = useState(false)
   const [opeDeleteTeam, setOpenDeleteTeam] = useState(false)
+  const [canRemoveOwner, setCanRemoveOwner] = useState(false)
   const alert = useAlert()
 
   const navigate = useNavigate()
@@ -136,6 +137,7 @@ function Team() {
       const res = await Api.getMembers(id)
 
       setMembers(res.data);
+      setCanRemoveOwner(res.data.filter(member => member.role === 'owner').length > 1)
     } catch (error) {
       setSnackbarMessage("Failed to fetch members");
       setSnackbarSeverity("error");
@@ -506,7 +508,7 @@ function Team() {
                       <TableCell>{getRole(member)}</TableCell>
                       <TableCell>
                         {activeUserIsAdmin && <Button variant="contained" onClick={() => initChangeRole(member)}>Change role</Button>}
-                        {activeUserIsAdmin || (user?.email === member.email) &&
+                        {(activeUserIsAdmin || (user?.email === member.email)) && (member?.role !== 'owner' || canRemoveOwner) &&
                           <Button sx={{ marginLeft: '2rem' }} variant="contained" color="error" onClick={() => initConfirmRemove(member)}>
                             {user?.email === member.email ? 'Leave' : 'Remove'}
                           </Button>
