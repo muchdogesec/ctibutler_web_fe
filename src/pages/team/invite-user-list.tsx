@@ -30,7 +30,7 @@ function InviteUserList({ teamId, onComplete, isOwner, noOfFreeSlots }: InviteUs
         setInvites(invites => ([...invites, { role: 'member', email: '' }]))
     }
 
-    const onItemChanged = (index: number, field: string, value: string) => {
+    const onEmailChanged= (index: number, field: string, value: string) => {
         let isValid = false
         if (validateEmail(value)) {
             isValid = true
@@ -47,6 +47,16 @@ function InviteUserList({ teamId, onComplete, isOwner, noOfFreeSlots }: InviteUs
             isValid,
             ...emailsValidity.slice(index + 1)
         ]))
+    }
+
+    const onItemChanged = (index: number, field: string, value: string) => {
+        setInvites(invites => {
+            return [
+                ...invites.slice(0, index),
+                { ...invites[index], [field]: value },
+                ...invites.slice(index + 1)
+            ]
+        })
     }
 
     const onRemove = (index: number) => {
@@ -93,7 +103,7 @@ function InviteUserList({ teamId, onComplete, isOwner, noOfFreeSlots }: InviteUs
         <Box>
             {noOfFreeSlots > 0 && invites.map((item, index) => (
                 <InviteUserLine key={index} email={item.email} role={item.role}
-                    onEmailChanged={(email) => onItemChanged(index, 'email', email)}
+                    onEmailChanged={(email) => onEmailChanged(index, 'email', email)}
                     onRoleChanged={(role) => onItemChanged(index, 'role', role)}
                     onRemove={() => { onRemove(index) }}
                     isOwner={isOwner}

@@ -12,6 +12,7 @@ import './index.css';
 
 const drawerWidth = 240;
 const CTIBUTLER_API_SWAGGER_URL = process.env.REACT_APP_CTIBUTLER_API_SWAGGER_URL
+const TAXII_SWAGGER_URL = process.env.REACT_APP_TAXII_SWAGGER_URL
 
 
 const DashboardLayout = () => {
@@ -59,6 +60,10 @@ const DashboardLayout = () => {
               <ListItem button component={NavLink} to={CTIBUTLER_API_SWAGGER_URL}>
                 <ListItemIcon><DocumentScanner></DocumentScanner></ListItemIcon>
                 <ListItemText primary="API Documentation" />
+              </ListItem>
+              <ListItem target='_blank' component={NavLink} to={TAXII_SWAGGER_URL}>
+                <ListItemIcon><DocumentScanner></DocumentScanner></ListItemIcon>
+                <ListItemText primary="TAXII API documentation" />
               </ListItem>
               {activeTeam?.is_admin && (
                 <ListItem button component={NavLink} to={URLS.teamManagement(activeTeamId)}>
