@@ -48,6 +48,7 @@ jobs:
             REACT_APP_TAXII_SWAGGER_URL=https://taxii.ctibutler.staging.signalscorps.com/schema/swagger-ui/
             REACT_APP_CTIBUTLET_ADMIN_SWAGGER_URL=https://management.ctibutler.staging.signalscorps.com/ctibutler_api/admin/schema/swagger-ui/
             REACT_APP_ADMIN_URL=https://management.ctibutler.staging.signalscorps.com/admin/
+            REACT_APP_TAXII_SWAGGER_URL=https://taxii.ctibutler.staging.signalscorps.com/schema/swagger-ui/
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
