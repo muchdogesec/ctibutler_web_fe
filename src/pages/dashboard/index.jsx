@@ -59,11 +59,11 @@ const DashboardLayout = () => {
             {(<>
               <ListItem button component={NavLink} to={CTIBUTLER_API_SWAGGER_URL}>
                 <ListItemIcon><DocumentScanner></DocumentScanner></ListItemIcon>
-                <ListItemText primary="API Documentation" />
+                <ListItemText primary="API Docs" />
               </ListItem>
               <ListItem target='_blank' component={NavLink} to={TAXII_SWAGGER_URL}>
                 <ListItemIcon><DocumentScanner></DocumentScanner></ListItemIcon>
-                <ListItemText primary="TAXII API documentation" />
+                <ListItemText primary="TAXII API Docs" />
               </ListItem>
               {activeTeam?.is_admin && (
                 <ListItem button component={NavLink} to={URLS.teamManagement(activeTeamId)}>
