@@ -58,11 +58,11 @@ const DashboardLayout = () => {
           <List>
             {(<>
               <ListItem button component={NavLink} to={CTIBUTLER_API_SWAGGER_URL}>
-                <ListItemIcon><DocumentScanner></DocumentScanner></ListItemIcon>
+                <ListItemIcon><Api /></ListItemIcon>
                 <ListItemText primary="API Docs" />
               </ListItem>
               <ListItem target='_blank' component={NavLink} to={TAXII_SWAGGER_URL}>
-                <ListItemIcon><DocumentScanner></DocumentScanner></ListItemIcon>
+                <ListItemIcon><Api /></ListItemIcon>
                 <ListItemText primary="TAXII API Docs" />
               </ListItem>
               {activeTeam?.is_admin && (
@@ -71,8 +71,8 @@ const DashboardLayout = () => {
                   <ListItemText primary="Team Management" />
                 </ListItem>
               )}
-              <ListItem button component={NavLink} to="https://support.dogesec.com/">
-                <ListItemIcon><Support /></ListItemIcon>
+              <ListItem button component={NavLink} target='_blank' to="https://support.dogesec.com/">
+                <ListItemIcon><SupportAgent /></ListItemIcon>
                 <ListItemText primary="Support" />
               </ListItem>
             </>)}
