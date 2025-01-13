@@ -90,6 +90,9 @@ function InviteUserList({ teamId, onComplete, isOwner, noOfFreeSlots }: InviteUs
                 if (err?.response?.data?.code === "E01") {
                     alert.showAlert(err?.response?.data?.message)
                     setError(err?.response?.data?.message)
+                } else if (err?.response?.data?.code === "E02") {
+                    alert.showAlert(err?.response?.data?.message)
+                    setError(err?.response?.data?.message)
                 } else {
                     const errors = err?.response?.data?.email
                     setError(errors[0])
