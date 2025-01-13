@@ -140,8 +140,9 @@ function TeamList({ isAdmin }: TeamListProps) {
             Your Teams
           </Typography>
           <Typography className="description">
-            <p>You can create one or more teams below. You must create at least one team to access the API.</p>
-            <p>Most users only require one team for their organisation.</p>
+            <p>You can create one or more teams below.</p>
+            <p>Most users only require one team that represents their organisation.</p>
+            <p>Each team you create has a subscription which controls the features the users in the teams can access.</p>
           </Typography>
         </>
         )}
