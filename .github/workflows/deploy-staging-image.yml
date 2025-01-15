@@ -42,7 +42,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             REACT_APP_AUTH0_DOMAIN=auth.signalscorps.com
-            REACT_APP_AUTH0_CLIENT_ID=bruTJwVyYmzvnoSpVMZhIK1OC2uJKdxI
+            REACT_APP_AUTH0_CLIENT_ID=4etmSIDJAP8X8JWkTPbiwcOTLvLuszpg
             REACT_APP_API_BASE_URL=https://management.vulmatch.staging.signalscorps.com/
             REACT_APP_API_SWAGGER_URL=https://api.vulmatch.staging.signalscorps.com/schema/swagger-ui/
             REACT_APP_ADMIN_SWAGGER_URL=https://management.vulmatch.staging.signalscorps.com/vulmatch_api/admin/schema/swagger-ui/
