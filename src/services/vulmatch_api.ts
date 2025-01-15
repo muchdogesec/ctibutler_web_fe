@@ -1,28 +1,29 @@
 import axios from "axios";
+import { apiRequest } from "./api.ts"
 
+const VULMATCH_API_BASE_URL = `vulmatch_api/proxy/open`
 
-export const fetchCves = (filters: Object, page: number, sort: string) => {
-    return axios.get('http://37.27.208.239:8005/api/v1/cve/objects/', {
-        headers: {
-            'Accept': 'application/json'
-        },
-        params: {
+export const fetchCves = (filters: any, page: number, sort: string) => {
+    return apiRequest(
+        "GET",
+        `/${VULMATCH_API_BASE_URL}/cve/objects/`,
+        {}, {},
+        {
             ...filters,
             page: page + 1,
             sort,
         },
-    })
+    )
 }
 
 const fetchCveBundleByPage = (id: string, page: number) => {
-    return axios.get(`http://37.27.208.239:8005/api/v1/cve/objects/${id}/bundle/`, {
-        headers: {
-            'Accept': 'application/json'
-        },
-        params: {
+    return apiRequest(
+        "GET",
+        `/${VULMATCH_API_BASE_URL}/cve/objects/${id}/bundle/`, {}, {},
+        {
             page,
         }
-    })
+    )
 }
 
 export const fetchCveBundle = async (id: string) => {
@@ -41,14 +42,13 @@ export const fetchCveBundle = async (id: string) => {
     return results
 }
 
-export const fetchCpes = (filters: Object, page: number) => {
-    return axios.get('http://37.27.208.239:8005/api/v1/cpe/objects/', {
-        headers: {
-            'Accept': 'application/json'
-        },
-        params: {
+export const fetchCpes = (filters: any, page: number) => {
+    return apiRequest(
+        "GET",
+        `/${VULMATCH_API_BASE_URL}/cpe/objects/`, {}, {},
+        {
             ...filters,
             page: page + 1,
         },
-    })
+    )
 }
