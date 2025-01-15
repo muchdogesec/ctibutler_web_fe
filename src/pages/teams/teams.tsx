@@ -140,8 +140,9 @@ function TeamList({ isAdmin }: TeamListProps) {
             Your Teams
           </Typography>
           <Typography className="description">
-            <p>You can create one or more teams below. You must create at least one team to access the API.</p>
-            <p>Most users only require one team for their organisation.</p>
+            <p>You can create one or more teams below.</p>
+            <p>Most users only require one team that represents their organisation.</p>
+            <p>Each team you create has a subscription which controls the features the users in the teams can access.</p>
           </Typography>
         </>
         )}
@@ -150,7 +151,6 @@ function TeamList({ isAdmin }: TeamListProps) {
             Add New Team
           </Button>
         }
-
 
         {isAdmin && <Box sx={{ display: 'flex', justifyContent: 'right' }}>
           <TextField
@@ -209,21 +209,14 @@ function TeamList({ isAdmin }: TeamListProps) {
                     <TableCell>{team.subscription?.items[0].price.product_name || 'No Active Plan'}</TableCell>
                     <TableCell>{team.subscription?.status}</TableCell>
                     <TableCell>
-
-
-                      {!isAdmin && (
-                        (team.is_private) ? (<></>) : (
-                          <Button
-                            variant="contained"
-                            color="error"
-                            sx={{ ml: 1 }}
-                            onClick={() => handleOpenLeaveTeamModal(team)}
-                          >
-                            Leave
-                          </Button>
-                        )
-                      )
-                      }
+                      <Link to={URLS.teamManagement(team.id)}>
+                        <Button
+                          variant="contained"
+                          sx={{ ml: 1 }}
+                        >
+                          Manage
+                        </Button>
+                      </Link>
                     </TableCell>
                   </TableRow>
                 ))

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, Box } from '@mui/material';
-import { Group, DocumentScanner, Support } from '@mui/icons-material';
+import { Group, Api, SupportAgent } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import NavBar from './navbar.tsx';
@@ -12,6 +12,7 @@ import './index.css';
 
 const drawerWidth = 240;
 const CTIBUTLER_API_SWAGGER_URL = process.env.REACT_APP_CTIBUTLER_API_SWAGGER_URL
+const TAXII_SWAGGER_URL = process.env.REACT_APP_TAXII_SWAGGER_URL
 
 
 const DashboardLayout = () => {
@@ -57,8 +58,12 @@ const DashboardLayout = () => {
           <List>
             {(<>
               <ListItem button component={NavLink} to={CTIBUTLER_API_SWAGGER_URL}>
-                <ListItemIcon><DocumentScanner></DocumentScanner></ListItemIcon>
-                <ListItemText primary="API Documentation" />
+                <ListItemIcon><Api /></ListItemIcon>
+                <ListItemText primary="API Docs" />
+              </ListItem>
+              <ListItem target='_blank' component={NavLink} to={TAXII_SWAGGER_URL}>
+                <ListItemIcon><Api /></ListItemIcon>
+                <ListItemText primary="TAXII API Docs" />
               </ListItem>
               {activeTeam?.is_admin && (
                 <ListItem button component={NavLink} to={URLS.teamManagement(activeTeamId)}>
@@ -66,8 +71,8 @@ const DashboardLayout = () => {
                   <ListItemText primary="Team Management" />
                 </ListItem>
               )}
-              <ListItem button component={NavLink} to="https://support.dogesec.com/">
-                <ListItemIcon><Support /></ListItemIcon>
+              <ListItem button component={NavLink} target='_blank' to="https://support.dogesec.com/">
+                <ListItemIcon><SupportAgent /></ListItemIcon>
                 <ListItemText primary="Support" />
               </ListItem>
             </>)}
