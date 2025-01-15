@@ -11,6 +11,7 @@ import { TeamContext } from '../../contexts/team-context.tsx';
 import { ITeam } from '../../services/types.ts';
 import { URLS } from '../../services/urls.ts';
 import AddTeamDialog from './new-team.tsx';
+import { APP_TITLE } from '../../config.ts';
 
 const drawerWidth = 240;
 
@@ -82,7 +83,7 @@ const NavBar = () => {
 
             <Toolbar sx={{ background: '#0073ec' }}>
                 <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
-                    CTI Butler
+                    {APP_TITLE}
                 </Typography>
                 {user?.metadata_is_staff && <StaffPopover></StaffPopover>}
                 {user ? (

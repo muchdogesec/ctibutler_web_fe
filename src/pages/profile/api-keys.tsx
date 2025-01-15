@@ -21,6 +21,7 @@ import {
 import { Api } from '../../services/api.ts';
 import { ITeam } from '../../services/types.ts';
 import ApiKeyDialog from './token-dialog.tsx';
+import { APP_NAME } from '../../config.ts';
 
 interface ApiKey {
     id: string;
@@ -100,7 +101,7 @@ const ApiKeyManager = () => {
         <>
             <Typography variant='h5'>Your API Keys</Typography>
             <Typography className="description">
-                <p>You can generate API keys to use with the CTI Butler API. API keys are linked to teams, and will only return the data for the specific team it is assigned to.</p>
+                <p>You can generate API keys to use with the {APP_NAME} API. API keys are linked to teams, and will only return the data for the specific team it is assigned to.</p>
                 <p>Note, if your teams' subscription does not support API use then you will not be able to generate an API key for use with it. Please ask a team owner or team admin to upgrade the teams subscription to enable access.</p>
             </Typography>
             <Button variant="contained" sx={{textTransform: 'uppercase'}} onClick={() => {initCreateToken()}}>Create Token</Button>

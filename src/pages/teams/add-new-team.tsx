@@ -7,6 +7,7 @@ import TeamManagement from "./team-management.tsx";
 import { useNavigate } from "react-router-dom";
 import { TeamContext } from "../../contexts/team-context.tsx";
 import { URLS } from "../../services/urls.ts";
+import { APP_TITLE } from "../../config.ts";
 
 
 function AddNewTeam() {
@@ -21,7 +22,7 @@ function AddNewTeam() {
 
 
   useEffect(() => {
-    document.title = 'Add a New Team | CTI Butler Web'
+    document.title = `Add a New Team | ${APP_TITLE}`
   }, [])
 
   return (

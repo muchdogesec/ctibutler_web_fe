@@ -36,6 +36,7 @@ import { ChangeRoleDialog } from "./change-role.tsx";
 import { ConfirmDeleteDialog } from "./confirm-delete.tsx";
 import { useAlert } from "../../contexts/alert-context.tsx";
 import { getDateString } from "../../services/utils.ts";
+import { APP_TITLE } from "../../config.ts";
 
 const ConfirmRemoveMemberDialog = ({ teamId, open, onClose, member }: {
   teamId: string, open: boolean, onClose: (reload: boolean) => void, member?: Member
@@ -106,7 +107,7 @@ function Team() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    document.title = 'Team Settings | CTI Butler Web'
+    document.title = `Team Settings | ${APP_TITLE}`
   }, [])
 
 

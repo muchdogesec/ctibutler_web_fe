@@ -25,6 +25,7 @@ import ApiKeyManager from "./api-keys.tsx";
 import "./styles.css"
 import { ConfirmDisable2FA } from "./confirm-disable-2fa.tsx";
 import { TeamContext } from "../../contexts/team-context.tsx";
+import { APP_TITLE } from "../../config.ts";
 
 const UserProfile = () => {
     const { user } = useAuth0();
@@ -155,7 +156,7 @@ const UserProfile = () => {
     }
 
     useEffect(() => {
-        document.title = 'Account Settings | CTI Butler Web'
+        document.title = `Account Settings | ${APP_TITLE}`
     }, [])
 
     const handleCloseDisable2FAModal = (disabled: boolean) => {

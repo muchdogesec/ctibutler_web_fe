@@ -18,6 +18,7 @@ import {
 import { Api, IUser } from '../../services/api.ts';
 import { Link, useLocation } from 'react-router-dom';
 import { URLS } from '../../services/urls.ts';
+import { APP_TITLE } from '../../config.ts';
 
 const UserManagement = () => {
     const [users, setUsers] = useState<IUser[]>([]);
@@ -77,7 +78,7 @@ const UserManagement = () => {
     };
 
     useEffect(() => {
-        document.title = 'Manage User | CTI Butler Web'
+        document.title = `Manage User | ${APP_TITLE}`
     }, [])
 
     return (
