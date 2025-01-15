@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, Box } from '@mui/material';
-import { Group, Api, SupportAgent } from '@mui/icons-material';
+import { Group, Api, SupportAgent, Support } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import NavBar from './navbar.tsx';
@@ -11,7 +11,7 @@ import './index.css';
 
 
 const drawerWidth = 240;
-const CTIBUTLER_API_SWAGGER_URL = process.env.REACT_APP_CTIBUTLER_API_SWAGGER_URL
+const API_SWAGGER_URL = process.env.REACT_APP_API_SWAGGER_URL
 const TAXII_SWAGGER_URL = process.env.REACT_APP_TAXII_SWAGGER_URL
 
 
@@ -50,14 +50,14 @@ const DashboardLayout = () => {
           <Toolbar sx={{ background: '#0073ec' }}>
             <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '100%', width: '100%' }}>
               <NavLink to={URLS.teamManagement(activeTeamId)}>
-                <img alt='logo' style={{ width: '200px', display: 'block' }} src="/ctibutler-logo.png" />
+                <img alt='logo' style={{ width: '200px', display: 'block' }} src="/vulmatch-logo.png" />
               </NavLink>
             </div>
           </Toolbar>
           <Divider />
           <List>
             {(<>
-              <ListItem button component={NavLink} to={CTIBUTLER_API_SWAGGER_URL}>
+              <ListItem button component={NavLink} to={API_SWAGGER_URL}>
                 <ListItemIcon><Api /></ListItemIcon>
                 <ListItemText primary="API Docs" />
               </ListItem>
@@ -74,6 +74,14 @@ const DashboardLayout = () => {
               <ListItem button component={NavLink} target='_blank' to="https://support.dogesec.com/">
                 <ListItemIcon><SupportAgent /></ListItemIcon>
                 <ListItemText primary="Support" />
+              </ListItem>
+              <ListItem button component={NavLink} to="/vulnerabilities">
+                <ListItemIcon><Support /></ListItemIcon>
+                <ListItemText primary="Vulnerabilities" />
+              </ListItem>
+              <ListItem button component={NavLink} to="/cpes">
+                <ListItemIcon><Support /></ListItemIcon>
+                <ListItemText primary="CPE" />
               </ListItem>
             </>)}
           </List>

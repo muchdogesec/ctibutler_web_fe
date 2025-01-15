@@ -19,10 +19,10 @@ import AcceptInvite from "./pages/accept-invite/index.tsx";
 import UserManagement from "./pages/users/index.tsx";
 import AdminTeams from "./pages/admin-team/index.tsx";
 import TeamLayout from "./pages/team-layout.tsx/index.tsx";
-import AddNewTeam from "./pages/teams/add-new-team.tsx";
 import StaffLayout from "./pages/staff-layout.tsx/index.tsx";
-
-import "./index.css";
+import VulnerabilitiesPage from "./pages/vulmatch/cves/index.tsx";
+import CPEListPage from "./pages/vulmatch/cpe/index.tsx";
+import VulnerabilityDetailPage from "./pages/vulmatch/cve-details/index.tsx";
 
 const AUTH0_DOMAIN = process.env.REACT_APP_AUTH0_DOMAIN
 const AUTH0_CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID
@@ -85,6 +85,18 @@ const router = createBrowserRouter([
             Component: AdminTeams,
           },
         ]
+      },
+      {
+        path: "vulnerabilities",
+        Component: VulnerabilitiesPage,
+      },
+      {
+        path: "vulnerabilities/:id",
+        Component: VulnerabilityDetailPage,
+      },
+      {
+        path: "cpes",
+        Component: CPEListPage,
       }
     ],
   },

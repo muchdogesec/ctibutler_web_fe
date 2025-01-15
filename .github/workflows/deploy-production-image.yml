@@ -1,4 +1,4 @@
-name: Create and publish the Docker image for CTI Butler Web Production
+name: Create and publish the Docker image for Vulmatch Web Production
 
 on:
   push:
@@ -6,12 +6,12 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}_ctibutler_web_production
+  IMAGE_NAME: ${{ github.repository }}_vulmatch_web_production
 
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
-    environment: ctibutler_web_staging
+    environment: vulmatch_web_staging
     permissions:
       contents: read
       packages: write
@@ -43,12 +43,11 @@ jobs:
           build-args: |
             REACT_APP_AUTH0_DOMAIN=auth.dogesec.com
             REACT_APP_AUTH0_CLIENT_ID=IwAl9kSA7Il2AixCPVdSwQY9Byn0njVx
-            REACT_APP_API_BASE_URL=https://management.ctibutler.com/
-            REACT_APP_CTIBUTLER_API_SWAGGER_URL=https://api.ctibutler.com/schema/swagger-ui/
-            REACT_APP_TAXII_SWAGGER_URL=https://taxii.ctibutler.com/schema/swagger-ui/
-            REACT_APP_CTIBUTLET_ADMIN_SWAGGER_URL=https://management.ctibutler.com/ctibutler_api/admin/schema/swagger-ui/
-            REACT_APP_ADMIN_URL=https://management.ctibutler.com/admin/
-            REACT_APP_TAXII_SWAGGER_URL=https://taxii.ctibutler.com/schema/swagger-ui/
+            REACT_APP_API_BASE_URL=https://management.vulmatch.com/
+            REACT_APP_API_SWAGGER_URL=https://api.vulmatch.com/schema/swagger-ui/
+            REACT_APP_ADMIN_SWAGGER_URL=https://management.vulmatch.com/vulmatch_api/admin/schema/swagger-ui/
+            REACT_APP_ADMIN_URL=https://management.vulmatch.com/admin/
+            REACT_APP_TAXII_SWAGGER_URL=https://taxii.vulmatch.com/schema/swagger-ui/
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:

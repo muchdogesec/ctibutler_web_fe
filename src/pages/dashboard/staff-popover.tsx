@@ -8,8 +8,8 @@ import { ArrowDropDown } from '@mui/icons-material';
 import { useAuth0 } from '@auth0/auth0-react';
 import { URLS } from '../../services/urls.ts';
 
-const CTIBUTLET_ADMIN_URL = process.env.REACT_APP_ADMIN_URL || '/admin'
-const CTIBUTLET_ADMIN_SWAGGER_URL = process.env.REACT_APP_CTIBUTLET_ADMIN_SWAGGER_URL || '/admin/swagger'
+const APP_ADMIN_URL = process.env.REACT_APP_ADMIN_URL || '/admin'
+const APP_ADMIN_SWAGGER_URL = process.env.REACT_APP_ADMIN_SWAGGER_URL || '/admin/swagger'
 
 export default function StaffPopover() {
     const { logout } = useAuth0()
@@ -50,12 +50,12 @@ export default function StaffPopover() {
                         <ListItemText primary="Manage Teams" />
                     </ListItem>
                     <ListItem>
-                        <a href={CTIBUTLET_ADMIN_URL} style={{ textDecoration: 'none' }}>
+                        <a href={APP_ADMIN_URL} style={{ textDecoration: 'none' }}>
                             <ListItemText primary="Access Django Staff Area" />
                         </a>
                     </ListItem>
                     <ListItem>
-                        <a href={CTIBUTLET_ADMIN_SWAGGER_URL} style={{ textDecoration: 'none' }}>
+                        <a href={APP_ADMIN_SWAGGER_URL} style={{ textDecoration: 'none' }}>
                             <ListItemText primary="Access Admin Swagger" />
                         </a>
                     </ListItem>
