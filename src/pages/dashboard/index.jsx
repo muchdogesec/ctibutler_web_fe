@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, Box } from '@mui/material';
-import { Group, Api, SupportAgent, Support } from '@mui/icons-material';
+import { Group, Api, SupportAgent, CrisisAlert, Inventory } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import NavBar from './navbar.tsx';
@@ -57,11 +57,11 @@ const DashboardLayout = () => {
           <Divider />
           <List>
               <ListItem button component={NavLink} to="/vulnerabilities">
-                <ListItemIcon><Support /></ListItemIcon>
+                <ListItemIcon><CrisisAlert /></ListItemIcon>
                 <ListItemText primary="Vulnerabilities" />
               </ListItem>
               <ListItem button component={NavLink} to="/cpes">
-                <ListItemIcon><Support /></ListItemIcon>
+                <ListItemIcon><Inventory /></ListItemIcon>
                 <ListItemText primary="Products" />
               </ListItem>
             {(<>

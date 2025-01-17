@@ -79,9 +79,9 @@ const NavBar = () => {
     }, [reloadTeamListIndex])
 
     return (
-        <AppBar position="fixed" sx={{ ml: `${drawerWidth}px`, background: '#0073ec' }}>
+        <AppBar position="fixed" sx={{ ml: `${drawerWidth}px`, background: '#52057b' }}>
 
-            <Toolbar sx={{ background: '#0073ec' }}>
+            <Toolbar sx={{ background: '#52057b' }}>
                 <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
                     {APP_TITLE}
                 </Typography>
