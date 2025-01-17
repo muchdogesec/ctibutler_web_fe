@@ -65,11 +65,11 @@ const DashboardLayout = () => {
                 <ListItemText primary="Products" />
               </ListItem>
             {(<>
-              <ListItem button component={NavLink} to={API_SWAGGER_URL}>
+              <ListItem button component={NavLink} target="_blank" to={API_SWAGGER_URL}>
                 <ListItemIcon><Api /></ListItemIcon>
                 <ListItemText primary="API Docs" />
               </ListItem>
-              <ListItem target='_blank' component={NavLink} to={TAXII_SWAGGER_URL}>
+              <ListItem target='_blank' component={NavLink} target="_blank" to={TAXII_SWAGGER_URL}>
                 <ListItemIcon><Api /></ListItemIcon>
                 <ListItemText primary="TAXII API Docs" />
               </ListItem>
