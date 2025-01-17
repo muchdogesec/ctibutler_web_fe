@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Vulmatch",
+  "name": "traightforward vulnerability management. Know when software you use is vulnerable, how it is being exploited, and how to detect an attack.",
   "icons": [
     {
       "src": "favicon.ico",
