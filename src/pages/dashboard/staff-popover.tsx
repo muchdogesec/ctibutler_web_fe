@@ -28,7 +28,7 @@ export default function StaffPopover() {
 
     return (
         <>
-            <Button sx={{ textTransform: 'none', boxShadow: 'none', height: '60px', background: '#0073ec' }} aria-describedby={id} variant="contained" onClick={handleClick}>
+            <Button sx={{ textTransform: 'none', boxShadow: 'none', height: '60px', background: '#52057b' }} aria-describedby={id} variant="contained" onClick={handleClick}>
                 <Typography>Staff Actions</Typography>
                 <ArrowDropDown></ArrowDropDown>
             </Button>
