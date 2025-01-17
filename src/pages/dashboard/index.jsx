@@ -47,7 +47,7 @@ const DashboardLayout = () => {
           variant="permanent"
           anchor="left"
         >
-          <Toolbar sx={{ background: '#0073ec' }}>
+          <Toolbar sx={{ background: '#52057b' }}>
             <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '100%', width: '100%' }}>
               <NavLink to={URLS.teamManagement(activeTeamId)}>
                 <img alt='logo' style={{ width: '200px', display: 'block' }} src="/vulmatch-logo.png" />
@@ -56,6 +56,14 @@ const DashboardLayout = () => {
           </Toolbar>
           <Divider />
           <List>
+              <ListItem button component={NavLink} to="/vulnerabilities">
+                <ListItemIcon><Support /></ListItemIcon>
+                <ListItemText primary="Vulnerabilities" />
+              </ListItem>
+              <ListItem button component={NavLink} to="/cpes">
+                <ListItemIcon><Support /></ListItemIcon>
+                <ListItemText primary="Products" />
+              </ListItem>
             {(<>
               <ListItem button component={NavLink} to={API_SWAGGER_URL}>
                 <ListItemIcon><Api /></ListItemIcon>
@@ -74,14 +82,6 @@ const DashboardLayout = () => {
               <ListItem button component={NavLink} target='_blank' to="https://support.dogesec.com/">
                 <ListItemIcon><SupportAgent /></ListItemIcon>
                 <ListItemText primary="Support" />
-              </ListItem>
-              <ListItem button component={NavLink} to="/vulnerabilities">
-                <ListItemIcon><Support /></ListItemIcon>
-                <ListItemText primary="Vulnerabilities" />
-              </ListItem>
-              <ListItem button component={NavLink} to="/cpes">
-                <ListItemIcon><Support /></ListItemIcon>
-                <ListItemText primary="CPE" />
               </ListItem>
             </>)}
           </List>
