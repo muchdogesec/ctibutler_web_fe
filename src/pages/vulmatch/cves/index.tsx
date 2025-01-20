@@ -49,7 +49,13 @@ function CVEListPage() {
 
     useEffect(() => {
         const query = new URLSearchParams(location.search);
-        setFilterField('cpes_vulnerable', query.get('cpe_id') || '')
+        setFilter({
+            cve_id: query.get('cve_id') || '',
+            attack_id: query.get('attack_id') || '',
+            cpes_vulnerable: query.get('cpes_vulnerable') || '',
+            cvss_base_score_min: query.get('cvss_base_score_min') || '',
+            weakness_id: query.get('weakness_id') || '',
+        })
         setInitialDataLoaded(true)
     }, [location])
 
@@ -65,8 +71,15 @@ function CVEListPage() {
         loadData()
     };
 
+    const updateURLWithParams = (params) => {
+        const queryString = new URLSearchParams(params).toString();
+        const newURL = `${window.location.pathname}?${queryString}`;
+        window.history.pushState(null, "", newURL);
+    };
+
     const loadData = async () => {
         setLoading(true)
+        updateURLWithParams(filter)
         const res = await fetchCves(filter, page, sortField + (sortOrder === 'asc' ? '_ascending' : '_descending'))
         setCves(res.data.objects)
         setTotalResutsCount(res.data.total_results_count)

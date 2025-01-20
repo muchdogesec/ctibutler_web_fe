@@ -7,5 +7,5 @@ export const URLS = {
 
     teamManagement: (team_id) => `/teams/${team_id}`,
     vulnerabilityDetailPage: (cve_id: string) => `/vulnerabilities/${cve_id}`,
-    vulnerabilityListPageForCpe: (cpe_id: string) => `/vulnerabilities/?cpe_id=${cpe_id}`,
+    vulnerabilityListPageForCpe: (cpe_id: string) => `/vulnerabilities/?cpes_vulnerable=${cpe_id}`,
 }

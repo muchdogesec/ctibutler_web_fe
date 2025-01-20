@@ -4,7 +4,7 @@ import { apiRequest } from "./api.ts"
 const VULMATCH_API_BASE_URL = `vulmatch_api/proxy/open`
 
 export const fetchCves = (filters: any, page: number, sort: string) => {
-    return apiRequest(
+    return apiRequest<any>(
         "GET",
         `/${VULMATCH_API_BASE_URL}/cve/objects/`,
         {}, {},
@@ -17,7 +17,7 @@ export const fetchCves = (filters: any, page: number, sort: string) => {
 }
 
 const fetchCveBundleByPage = (id: string, page: number) => {
-    return apiRequest(
+    return apiRequest<any>(
         "GET",
         `/${VULMATCH_API_BASE_URL}/cve/objects/${id}/bundle/`, {}, {},
         {
@@ -43,7 +43,7 @@ export const fetchCveBundle = async (id: string) => {
 }
 
 export const fetchCpes = (filters: any, page: number) => {
-    return apiRequest(
+    return apiRequest<any>(
         "GET",
         `/${VULMATCH_API_BASE_URL}/cpe/objects/`, {}, {},
         {

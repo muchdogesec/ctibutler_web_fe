@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { APP_TITLE } from "../../../config.ts";
 import { fetchCpes, fetchCves } from "../../../services/vulmatch_api.ts";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { URLS } from "../../../services/urls.ts";
 
 type CPE = {
@@ -41,14 +41,23 @@ function CPEListPage() {
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
     const [sortField, setSortField] = useState<string>('created');
     const [loading, setLoading] = useState(false)
+    const [initialDataLoaded, setInitialDataLoaded] = useState(false)
+    const location = useLocation();
 
 
     const setFilterField = (fieldName: string, value: string) => {
         setFilter((filer) => ({ ...filter, [fieldName]: value }))
     }
 
+    const updateURLWithParams = (params) => {
+        const queryString = new URLSearchParams(params).toString();
+        const newURL = `${window.location.pathname}?${queryString}`;
+        window.history.pushState(null, "", newURL);
+    };
+
     const loadData = async () => {
         setLoading(true)
+        updateURLWithParams(filter)
         const res = await fetchCpes(filter, page)
         setCpes(res.data.objects)
         setTotalResutsCount(res.data.total_results_count)
@@ -60,10 +69,26 @@ function CPEListPage() {
         loadData()
     }
 
+    useEffect(() => {
+        const query = new URLSearchParams(location.search);
+        setFilter({
+            vendor: query.get('vendor') || '',
+            product: query.get('product') || '',
+            cpe_id: query.get('cpe_id') || '',
+            cvss_base_score_min: query.get('cvss_base_score_min') || '',
+            weakness_id: query.get('weakness_id') || '',
+        })
+        setInitialDataLoaded(true)
+    }, [location])
+
     useEffect(() => { loadData() }, [page])
 
     useEffect(() => {
+        if (!initialDataLoaded) return
         loadData()
+    }, [page, initialDataLoaded])
+
+    useEffect(() => {
         document.title = `CPE List | ${APP_TITLE}`
     }, [])
 
