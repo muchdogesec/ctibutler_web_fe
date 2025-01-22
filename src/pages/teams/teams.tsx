@@ -66,12 +66,9 @@ const ConfirmLeaveTeamDialog = ({ open, onClose, team }: {
   );
 };
 
-interface TeamListProps {
-  isAdmin?: boolean;
-}
 
 
-function TeamList({ isAdmin }: TeamListProps) {
+function TeamList() {
   const [teams, setTeams] = useState<(ITeam & AdminTeam)[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedTeam, setSelectedTeam] = useState<ITeam | null>(null);
@@ -83,7 +80,7 @@ function TeamList({ isAdmin }: TeamListProps) {
 
   async function loadTeams() {
     try {
-      const res = await (isAdmin ? Api.adminFetchTeams(page, search) : Api.fetchTeams(page, search));
+      const res = await Api.fetchTeams(page, search);
       setTotalResultsCount(res.data.count)
       setTeams(res.data.results);
     } catch (error) {
@@ -131,11 +128,6 @@ function TeamList({ isAdmin }: TeamListProps) {
   return (
     <>
       <Box my={4}>
-        {isAdmin ? (
-          <Typography variant="h4" gutterBottom>
-            Your Teams
-          </Typography>
-        ) : (<>
           <Typography variant="h5" gutterBottom>
             Your Teams
           </Typography>
@@ -144,37 +136,16 @@ function TeamList({ isAdmin }: TeamListProps) {
             <p>Most users only require one team that represents their organisation.</p>
             <p>Each team you create has a subscription which controls the features the users in the teams can access.</p>
           </Typography>
-        </>
-        )}
-        {!isAdmin &&
           <Button onClick={() => setShowAddTeam(true)} variant="contained" color="primary">
             Add New Team
           </Button>
-        }
-
-        {isAdmin && <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-          <TextField
-            sx={{ maxWidth: '200px' }}
-            autoFocus
-            rows={3}
-            margin="dense"
-            label="Name"
-            fullWidth
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <Button onClick={filter}> Filter </Button>
-        </Box>}
         <TableContainer component={Paper} sx={{ mt: 2 }}>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
                 <TableCell>Description</TableCell>
-                {!isAdmin && <TableCell>Role</TableCell>}
-                {isAdmin && <TableCell>Type</TableCell>}
-                {isAdmin && <TableCell>Users</TableCell>}
-                {isAdmin && <TableCell>Team within plan limits</TableCell>}
+                <TableCell>Role</TableCell>
                 <TableCell>Plan</TableCell>
                 <TableCell>Subscription Status</TableCell>
                 <TableCell>Actions</TableCell>
@@ -197,15 +168,7 @@ function TeamList({ isAdmin }: TeamListProps) {
                       {showTeamLink(team) ? (<Link to={URLS.teamManagement(team.id)}>{team.name}</Link>) : <>{team.name}</>}
                     </TableCell>
                     <TableCell>{team.description}</TableCell>
-                    {!isAdmin && <TableCell>{getRole(team)}</TableCell>}
-                    {isAdmin && <TableCell>{team.is_private ? 'Personal' : 'User Created'}</TableCell>}
-                    {isAdmin && <TableCell>
-                      {team?.user_emails?.map((userEmail) => (
-                        <Link key={userEmail} to={URLS.staffUserListWithEmailQuery(userEmail)}>
-                          <Chip label={userEmail} />
-                        </Link>))}
-                    </TableCell>}
-                    {isAdmin && <TableCell>{limitExceeded(team) ? 'false' : 'true'}</TableCell>}
+                    <TableCell>{getRole(team)}</TableCell>
                     <TableCell>{team.subscription?.items[0].price.product_name || 'No Active Plan'}</TableCell>
                     <TableCell>{team.subscription?.status}</TableCell>
                     <TableCell>
@@ -225,15 +188,6 @@ function TeamList({ isAdmin }: TeamListProps) {
 
             </TableBody>
           </Table>
-          {isAdmin && <TablePagination
-            rowsPerPageOptions={[]}
-            count={totalResultsCount}
-            page={page}
-            rowsPerPage={10}
-            onPageChange={(ev, value) => setPage(value)}
-            color="primary"
-            style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}
-          />}
         </TableContainer>
         {selectedTeam && <ConfirmLeaveTeamDialog open={showLeaveTeamDialog} onClose={closeLeaveTeamDialog} team={selectedTeam}></ConfirmLeaveTeamDialog>}
         <AddTeamDialog onClose={() => setShowAddTeam(false)} open={showAddTeam}></AddTeamDialog>

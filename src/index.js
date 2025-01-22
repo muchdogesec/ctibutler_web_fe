@@ -16,8 +16,6 @@ import UserProfile from "./pages/profile/index.tsx";
 import AuthGuard from "./guards/auth.guard.tsx";
 import Logout from "./pages/dashboard/logout/index.jsx";
 import AcceptInvite from "./pages/accept-invite/index.tsx";
-import UserManagement from "./pages/users/index.tsx";
-import AdminTeams from "./pages/admin-team/index.tsx";
 import TeamLayout from "./pages/team-layout.tsx/index.tsx";
 import AddNewTeam from "./pages/teams/add-new-team.tsx";
 import StaffLayout from "./pages/staff-layout.tsx/index.tsx";
@@ -76,16 +74,8 @@ const router = createBrowserRouter([
         path: "staff",
         component: StaffLayout,
         children: [
-          {
-            path: "manage-users",
-            Component: UserManagement,
-          },
-          {
-            path: "manage-teams",
-            Component: AdminTeams,
-          },
         ]
-      }
+      },
     ],
   },
   {

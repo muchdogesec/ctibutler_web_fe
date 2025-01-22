@@ -43,12 +43,6 @@ export default function StaffPopover() {
                 }}
             >
                 <List>
-                    <ListItem component={NavLink} to={URLS.staffUserList()}>
-                        <ListItemText primary="Manage Users" />
-                    </ListItem>
-                    <ListItem component={NavLink} to={URLS.staffTeamList()}>
-                        <ListItemText primary="Manage Teams" />
-                    </ListItem>
                     <ListItem>
                         <a href={CTIBUTLET_ADMIN_URL} style={{ textDecoration: 'none' }}>
                             <ListItemText primary="Access Django Staff Area" />
