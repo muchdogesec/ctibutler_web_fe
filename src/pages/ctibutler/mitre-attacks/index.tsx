@@ -9,26 +9,40 @@ import {
     Button,
     TableContainer,
     TablePagination,
-    CircularProgress
+    CircularProgress,
+    Select,
+    MenuItem
 } from "@mui/material";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { URLS } from "../../../services/urls.ts";
-import { getDateString } from "../../../services/utils.ts";
 import { fetchAttackEnterprises } from "../../../services/ctibutler_api.ts";
 
 
 type Attack = {
     type: "marking-definition";
     id: string;
+    name: string;
+    description: string;
     created: string; // ISO 8601 format
     created_by_ref: string;
     definition: {
-      statement: string;
+        statement: string;
     };
     definition_type: "statement";
     object_marking_refs: string[];
     spec_version: "2.1";
-  };
+};
+
+const ATTACK_TYPES = [
+    { name: "MITRE ATT&CK Enterprise", value: 'attack-enterprise' },
+    { name: "MITRE ATT&CK ICS", value: 'attack-ics' },
+    { name: "MITRE ATT&CK Mobile", value: 'attack-mobile' },
+    { name: "MITRE CAPEC", value: 'capec' },
+    { name: "MITRE CWE", value: 'cwe' },
+    { name: "DISARM", value: 'disarm' },
+    { name: "MITRE ATLAS", value: 'atlas' },
+    { name: "Location", value: 'location' },
+];
 
 function MitreAttackListPage() {
     const [objects, setObjects] = useState<Attack[]>([])
@@ -41,12 +55,14 @@ function MitreAttackListPage() {
         type: '',
         weakness_id: '',
         capec_id: '',
+        attack_type: 'attack-enterprise',
     })
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
     const [sortField, setSortField] = useState<string>('created');
     const [loading, setLoading] = useState(false)
     const [initialDataLoaded, setInitialDataLoaded] = useState(false)
     const location = useLocation();
+    const [attackType, setAttackType] = useState('attack-enterprise')
 
     useEffect(() => {
         const query = new URLSearchParams(location.search);
@@ -57,9 +73,12 @@ function MitreAttackListPage() {
             type: query.get('type') || '',
             weakness_id: query.get('weakness_id') || '',
             capec_id: query.get('capec_id') || '',
+            attack_type: query.get('attack_type') || 'attack-enterprise',
         })
+        if(initialDataLoaded) loadData()
         setInitialDataLoaded(true)
     }, [location])
+
 
     const setFilterField = (fieldName: string, value: string) => {
         setFilter((filer) => ({ ...filter, [fieldName]: value }))
@@ -79,11 +98,20 @@ function MitreAttackListPage() {
         window.history.pushState(null, "", newURL);
     };
 
+    function limitCharacters(str, limit = 512) {
+        if (str.length > limit) {
+            return str.substring(0, limit) + '...';
+        }
+        return str;
+    }
+
+
     const loadData = async () => {
         setLoading(true)
+        setAttackType(filter.attack_type)
         updateURLWithParams(filter)
-        const res = await fetchAttackEnterprises(filter, page, sortField + (sortOrder === 'asc' ? '_ascending' : '_descending'))
-        setObjects(res.data.objects)
+        const res = await fetchAttackEnterprises(filter.attack_type, filter, page, sortField + (sortOrder === 'asc' ? '_ascending' : '_descending'))
+        setObjects(res.data.objects.filter(item => !['identity', 'marking-definition', 'x-mitre-matrix', 'x-mitre-collection'].includes(item.type)))
         setTotalResutsCount(res.data.total_results_count)
         setLoading(false)
     }
@@ -94,8 +122,15 @@ function MitreAttackListPage() {
     }
 
     const getAtlasID = (object) => {
-        console.log(object, object.external_references)
-        return object.external_references?.find(reference => reference.source_name === 'mitre-attack')?.external_id
+        const idReferenceNameDict = {
+            disarm: "DISARM",
+            atlas: "mitre-atlas",
+            cwe: "cwe",
+            capec: "capec"
+        }
+        const refernceName = idReferenceNameDict[attackType] || 'mitre-attack'
+        const id = object.external_references?.find(reference => reference.source_name === refernceName)?.external_id
+        return id
     }
 
     useEffect(() => {
@@ -110,11 +145,45 @@ function MitreAttackListPage() {
 
     return (
         <Container>
-            <Typography variant="h4" > MITRE ATT&CK Enterprise </Typography>
+            <Typography variant="h4" > Knowledgebase </Typography>
             <Grid2 container spacing={2}>
                 <Grid2 size={4}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', }}>
-                        <TextField 
+
+                        <Select
+                            value={filter.attack_type}
+                            label="Type"
+                            onChange={(ev) => setFilterField('attack_type', ev.target.value)}
+                        >
+
+                            <MenuItem key='attack-enterprise' value='attack-enterprise'>MITRE ATT&CK Enterprise</MenuItem>
+
+                            <MenuItem key='attack-ics' value='attack-ics'>MITRE ATT&CK ICS</MenuItem>
+                            <MenuItem key='attack-mobile' value='attack-mobile'>
+                                MITRE ATT&CK Mobile
+                            </MenuItem>
+                            <MenuItem key='capec' value='capec'>
+                                MITRE CAPEC
+                            </MenuItem>
+                            <MenuItem key='cwe' value='cwe'>
+                                MITRE CWE
+                            </MenuItem>
+                            <MenuItem key='disarm' value='disarm'>
+                                DISARM
+                            </MenuItem>
+                            <MenuItem key='atlas' value='atlas'>
+                                MITRE ATLAS
+                            </MenuItem>
+                            <MenuItem key='location' value='location'>
+                                Location
+                            </MenuItem>
+
+                        </Select>
+                    </Box>
+                </Grid2>
+                <Grid2 size={4}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', }}>
+                        <TextField
                             label="ATT&CK ID"
                             value={filter.attack_id} onChange={(ev) => setFilterField('attack_id', ev.target.value)}
                         ></TextField>
@@ -139,11 +208,6 @@ function MitreAttackListPage() {
                         <TextField label='Object Type' value={filter.type} onChange={(ev) => setFilterField('type', ev.target.value)}></TextField>
                     </Box>
                 </Grid2>
-                {/* <Grid2 size={4}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                        <TextField label="Knowledgebase name" value={filter.type} onChange={(ev) => setFilterField('type', ev.target.value)}></TextField>
-                    </Box>
-                </Grid2> */}
                 <Grid2 size={4}>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                         <Button onClick={() => filterObjects()} variant="contained">Filter</Button>
@@ -185,9 +249,9 @@ function MitreAttackListPage() {
                             </TableRow>
                         ) : (<>
                             {objects.map(object => <TableRow key={object.id}>
-                                <TableCell><Link to={URLS.attackDetailPage(getAtlasID(object))}>{getAtlasID(object)}</Link></TableCell>
+                                <TableCell><Link to={URLS.attackDetailPage(attackType || '', getAtlasID(object))}>{getAtlasID(object)}</Link></TableCell>
                                 <TableCell>{object.name}</TableCell>
-                                <TableCell>{object.description}</TableCell>
+                                <TableCell>{limitCharacters(object.description)}</TableCell>
                                 <TableCell>{object.type}</TableCell>
                                 <TableCell>{object.type}</TableCell>
                             </TableRow>)}

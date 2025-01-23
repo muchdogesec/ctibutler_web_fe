@@ -57,9 +57,37 @@ const DashboardLayout = () => {
           <Divider />
           <List>
             {(<>
-              <ListItem component={NavLink} to={URLS.mitreAttacks()}>
+              <ListItem component={NavLink} to={URLS.mitreAttacks('attack-enterprise')}>
                 <ListItemIcon><Search /></ListItemIcon>
-                <ListItemText primary="Search" />
+                <ListItemText primary="MITRE ATT&CK Enterprise" />
+              </ListItem>
+              <ListItem component={NavLink} to={URLS.mitreAttacks('attack-ics')}>
+                <ListItemIcon><Search /></ListItemIcon>
+                <ListItemText primary="MITRE ATT&CK ICS" />
+              </ListItem>
+              <ListItem component={NavLink} to={URLS.mitreAttacks('attack-mobile')}>
+                <ListItemIcon><Search /></ListItemIcon>
+                <ListItemText primary="MITRE ATT&CK Mobile" />
+              </ListItem>
+              <ListItem component={NavLink} to={URLS.mitreAttacks('capec')}>
+                <ListItemIcon><Search /></ListItemIcon>
+                <ListItemText primary="MITRE CAPEC" />
+              </ListItem>
+              <ListItem component={NavLink} to={URLS.mitreAttacks('cwe')}>
+                <ListItemIcon><Search /></ListItemIcon>
+                <ListItemText primary="MITRE CWE" />
+              </ListItem>
+              <ListItem component={NavLink} to={URLS.mitreAttacks('disarm')}>
+                <ListItemIcon><Search /></ListItemIcon>
+                <ListItemText primary="DISARM" />
+              </ListItem>
+              <ListItem component={NavLink} to={URLS.mitreAttacks('atlas')}>
+                <ListItemIcon><Search /></ListItemIcon>
+                <ListItemText primary="MITRE ATLAS" />
+              </ListItem>
+              <ListItem component={NavLink} to={URLS.mitreAttacks('location')}>
+                <ListItemIcon><Search /></ListItemIcon>
+                <ListItemText primary="Location" />
               </ListItem>
               <ListItem button component={NavLink} to={CTIBUTLER_API_SWAGGER_URL}>
                 <ListItemIcon><Api /></ListItemIcon>
@@ -68,10 +96,6 @@ const DashboardLayout = () => {
               <ListItem target='_blank' component={NavLink} to={TAXII_SWAGGER_URL}>
                 <ListItemIcon><Api /></ListItemIcon>
                 <ListItemText primary="TAXII API Docs" />
-              </ListItem>
-              <ListItem component={NavLink} to={URLS.mitreAttacks()}>
-                <ListItemIcon><Api /></ListItemIcon>
-                <ListItemText primary="Mitre Att&cks" />
               </ListItem>
               {activeTeam?.is_admin && (
                 <ListItem button component={NavLink} to={URLS.teamManagement(activeTeamId)}>

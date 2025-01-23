@@ -83,7 +83,7 @@ const router = createBrowserRouter([
         Component: MitreAttackListPage,
       },
       {
-        path: "attacks/:id",
+        path: "attacks/:attack_type/:id",
         Component: AttackDetailPage,
       },
     ]
