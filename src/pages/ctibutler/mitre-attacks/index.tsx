@@ -139,13 +139,17 @@ function MitreAttackListPage() {
     }, [page, initialDataLoaded])
 
     useEffect(() => {
-        document.title = `Mitre Att&cks | CTI Butler`
+        document.title = `Knowledgebase Search | CTI Butler`
     }, [])
 
 
     return (
         <Container>
-            <Typography variant="h4" > Knowledgebase </Typography>
+            <Typography variant="h4">Knowledgebase Search</Typography>
+            <Typography className="description">
+              <p>Use this page to explore and filter the knowledgebases.</p>
+            </Typography>
+
             <Grid2 container spacing={2}>
                 <Grid2 size={4}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', }}>
