@@ -78,7 +78,15 @@ const router = createBrowserRouter([
         children: [
         ]
       },
-    ],
+      {
+        path: "attacks",
+        Component: MitreAttackListPage,
+      },
+      {
+        path: "attacks/:id",
+        Component: AttackDetailPage,
+      },
+    ]
   },
   {
     path: "teams/invitation/:invite_id",

@@ -69,6 +69,10 @@ const DashboardLayout = () => {
                 <ListItemIcon><Api /></ListItemIcon>
                 <ListItemText primary="TAXII API Docs" />
               </ListItem>
+              <ListItem component={NavLink} to={URLS.mitreAttacks()}>
+                <ListItemIcon><Api /></ListItemIcon>
+                <ListItemText primary="Mitre Att&cks" />
+              </ListItem>
               {activeTeam?.is_admin && (
                 <ListItem button component={NavLink} to={URLS.teamManagement(activeTeamId)}>
                   <ListItemIcon><Group /></ListItemIcon>
