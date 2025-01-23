@@ -1,20 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
     Container,
     Typography,
-    Table, TableHead, TableRow, TableBody, TableCell
+    Table, TableHead, TableRow, TableBody, TableCell,
+    Box, Button, Tooltip
 } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
-import { URLS } from "../../../services/urls.ts";
-import { fetchAttackBundle } from "../../../services/ctibutler_api.ts";
+import { useParams } from "react-router-dom";
+import { fetchAttackBundle, fetchAttackObject } from "../../../services/ctibutler_api.ts";
+import { TeamContext } from "../../../contexts/team-context.tsx";
 
 
 function AttackDetailPage() {
     const [detailObject, setDetailObject] = useState<any>()
     const [objects, setObjects] = useState<any[]>([])
-    const { id } = useParams<{ id: string }>()
+    const { attack_type, id } = useParams<{ attack_type: string, id: string }>()
     const stixRef = useRef(null);
     const [loading, setLoading] = useState(true)
+    const { activeTeam } = useContext(TeamContext);
 
     const getStixObject = (objects: any[]) => {
         // const reportId = objects.find(object => object.type === 'report')?.id
@@ -49,31 +51,51 @@ function AttackDetailPage() {
         graph.loadData(data);
     }
 
+    const loadDetailObject = async () => {
+        const res = await fetchAttackObject(attack_type || '', id)
+        setDetailObject(res.data.objects[0])
+    }
     const loadData = async () => {
         if (!id) return
-        const objects = await fetchAttackBundle(id)
+        const objects = await fetchAttackBundle(attack_type || '', id)
         setObjects(objects)
-        setDetailObject(objects.find(item => item.type === 'attack-pattern'))
         setLoading(false)
         loadStixData(objects)
     }
 
     useEffect(() => {
         if (!id) return
+        loadDetailObject()
         loadData()
     }, [id])
     useEffect(() => {
         document.title = `Mitre Att&ck | CTI Butler`
     }, [])
 
+    const downloadStixObject = async () => {
+        const data = getStixObject(objects)
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        const reportUUID = detailObject?.id.split('--')[1]
+        link.download = `bundle--${reportUUID}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        URL.revokeObjectURL(url);
+    };
+
     return (
         <Container>
             <Typography variant="h5" > {detailObject?.name || id} </Typography>
 
 
-            <Typography><span style={{fontWeight: 600}}>ID: </span>{id}</Typography>
-            <Typography><span style={{fontWeight: 600}}>Description: </span>{detailObject?.description}</Typography>
-            <Typography><span style={{fontWeight: 600}}>ATT&CK Website link: </span>{detailObject?.external_references?.find(reference => reference.source_name === 'mitre-attack')?.url}</Typography>
+            <Typography><span style={{ fontWeight: 600 }}>ID: </span>{id}</Typography>
+            <Typography><span style={{ fontWeight: 600 }}>Description: </span>{detailObject?.description}</Typography>
+            <Typography><span style={{ fontWeight: 600 }}>ATT&CK Website link: </span>{detailObject?.external_references?.find(reference => reference.source_name === 'mitre-attack')?.url}</Typography>
 
             <Typography sx={{ marginTop: '2rem' }} variant="h5">References</Typography>
             <Table>
@@ -112,7 +134,19 @@ function AttackDetailPage() {
                 </TableBody>
             </Table>
 
-            <div ref={stixRef}></div>
+            <Box sx={{ marginTop: '3rem' }}>
+                <Typography variant="h5">CVE Graph</Typography>
+                <div ref={stixRef}></div>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    {(activeTeam?.allowed_data_download) ? (
+                        <Button onClick={downloadStixObject} variant='contained'>Download</Button>
+                    ) : (<Tooltip title="Your team plan must be upgraded to allow data downloads to download the bundle">
+                        <div>
+                            <Button variant='contained' disabled={true}>Download</Button>
+                        </div>
+                    </Tooltip>)}
+                </Box>
+            </Box>
 
         </Container>
     );
