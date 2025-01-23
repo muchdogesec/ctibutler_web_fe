@@ -21,6 +21,8 @@ import AddNewTeam from "./pages/teams/add-new-team.tsx";
 import StaffLayout from "./pages/staff-layout.tsx/index.tsx";
 
 import "./index.css";
+import MitreAttackListPage from "./pages/ctibutler/mitre-attacks/index.tsx";
+import AttackDetailPage from "./pages/ctibutler/attack-details/index.tsx";
 
 const AUTH0_DOMAIN = process.env.REACT_APP_AUTH0_DOMAIN
 const AUTH0_CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID

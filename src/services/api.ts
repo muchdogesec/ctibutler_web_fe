@@ -11,7 +11,7 @@ type Paginated<T> = {
 }
 
 // Common function for API requests with Authorization headers
-const apiRequest = async <T>(
+export const apiRequest = async <T>(
     method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE',
     path: string,
     data?: any,
