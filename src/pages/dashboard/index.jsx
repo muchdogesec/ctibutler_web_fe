@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, Box } from '@mui/material';
-import { Group, Api, SupportAgent } from '@mui/icons-material';
+import { Group, Api, SupportAgent, Search } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import NavBar from './navbar.tsx';
@@ -57,6 +57,10 @@ const DashboardLayout = () => {
           <Divider />
           <List>
             {(<>
+              <ListItem component={NavLink} to={URLS.mitreAttacks()}>
+                <ListItemIcon><Search /></ListItemIcon>
+                <ListItemText primary="Search" />
+              </ListItem>
               <ListItem button component={NavLink} to={CTIBUTLER_API_SWAGGER_URL}>
                 <ListItemIcon><Api /></ListItemIcon>
                 <ListItemText primary="API Docs" />
@@ -64,10 +68,6 @@ const DashboardLayout = () => {
               <ListItem target='_blank' component={NavLink} to={TAXII_SWAGGER_URL}>
                 <ListItemIcon><Api /></ListItemIcon>
                 <ListItemText primary="TAXII API Docs" />
-              </ListItem>
-              <ListItem component={NavLink} to={URLS.mitreAttacks()}>
-                <ListItemIcon><Api /></ListItemIcon>
-                <ListItemText primary="Mitre Att&cks" />
               </ListItem>
               {activeTeam?.is_admin && (
                 <ListItem button component={NavLink} to={URLS.teamManagement(activeTeamId)}>
