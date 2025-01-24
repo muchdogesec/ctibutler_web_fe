@@ -11,3 +11,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.MuiTableCell-head{
+  font-weight: bold !important;
+}
+
+.MuiTableCell-body{
+  vertical-align: top !important;
+}
+
+tbody > .MuiTableRow-root:nth-child(even){
+  background-color: lightgray;
+}

@@ -457,6 +457,13 @@ function Team() {
                   </TableCell>
                 </TableRow>
                 <TableRow>
+                  <TableCell>Allowed User Download</TableCell>
+                  <TableCell>{activeTeam?.allowed_data_download ? 'True' : 'False'}</TableCell>
+                  <TableCell>
+                    -
+                  </TableCell>
+                </TableRow>
+                <TableRow>
                   <TableCell>Allowed users in team</TableCell>
                   <TableCell>{activeTeam?.user_limit}</TableCell>
                   <TableCell>{(activeTeam?.members_count || 0) + (activeTeam?.invitations_count || 0)}</TableCell>
