@@ -457,7 +457,7 @@ function Team() {
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Allowed User Download</TableCell>
+                  <TableCell>Allowed Data Download</TableCell>
                   <TableCell>{activeTeam?.allowed_data_download ? 'True' : 'False'}</TableCell>
                   <TableCell>
                     -
