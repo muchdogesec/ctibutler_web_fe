@@ -10,8 +10,6 @@ import {
     TableContainer,
     TablePagination,
     CircularProgress,
-    Select,
-    MenuItem
 } from "@mui/material";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { URLS } from "../../../services/urls.ts";
@@ -33,16 +31,16 @@ type Attack = {
     spec_version: "2.1";
 };
 
-const ATTACK_TYPES = [
-    { name: "MITRE ATT&CK Enterprise", value: 'attack-enterprise' },
-    { name: "MITRE ATT&CK ICS", value: 'attack-ics' },
-    { name: "MITRE ATT&CK Mobile", value: 'attack-mobile' },
-    { name: "MITRE CAPEC", value: 'capec' },
-    { name: "MITRE CWE", value: 'cwe' },
-    { name: "DISARM", value: 'disarm' },
-    { name: "MITRE ATLAS", value: 'atlas' },
-    { name: "Location", value: 'location' },
-];
+const ATTACK_TYPES = {
+    "attack-enterprise": "MITRE ATT&CK Enterprise",
+    "attack-ics": "MITRE ATT&CK ICS",
+    "attack-mobile": "MITRE ATT&CK Mobile",
+    "capec": "MITRE CAPEC",
+    "cwe": "MITRE CWE",
+    "disarm": "DISARM",
+    "atlas": "MITRE ATLAS",
+    "location": "Location"
+};
 
 function MitreAttackListPage() {
     const [objects, setObjects] = useState<Attack[]>([])
@@ -55,14 +53,13 @@ function MitreAttackListPage() {
         type: '',
         weakness_id: '',
         capec_id: '',
-        attack_type: 'attack-enterprise',
     })
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
     const [sortField, setSortField] = useState<string>('created');
     const [loading, setLoading] = useState(false)
     const [initialDataLoaded, setInitialDataLoaded] = useState(false)
     const location = useLocation();
-    const [attackType, setAttackType] = useState('attack-enterprise')
+    const { attackType } = useParams<{ attackType: string }>()
 
     useEffect(() => {
         const query = new URLSearchParams(location.search);
@@ -73,9 +70,8 @@ function MitreAttackListPage() {
             type: query.get('type') || '',
             weakness_id: query.get('weakness_id') || '',
             capec_id: query.get('capec_id') || '',
-            attack_type: query.get('attack_type') || 'attack-enterprise',
         })
-        if(initialDataLoaded) loadData()
+        if (initialDataLoaded) loadData()
         setInitialDataLoaded(true)
     }, [location])
 
@@ -108,9 +104,8 @@ function MitreAttackListPage() {
 
     const loadData = async () => {
         setLoading(true)
-        setAttackType(filter.attack_type)
         updateURLWithParams(filter)
-        const res = await fetchAttackEnterprises(filter.attack_type, filter, page, sortField + (sortOrder === 'asc' ? '_ascending' : '_descending'))
+        const res = await fetchAttackEnterprises(attackType, filter, page, sortField + (sortOrder === 'asc' ? '_ascending' : '_descending'))
         setObjects(res.data.objects.filter(item => !['identity', 'marking-definition', 'x-mitre-matrix', 'x-mitre-collection'].includes(item.type)))
         setTotalResutsCount(res.data.total_results_count)
         setLoading(false)
@@ -139,52 +134,17 @@ function MitreAttackListPage() {
     }, [page, initialDataLoaded])
 
     useEffect(() => {
-        document.title = `Knowledgebase Search | CTI Butler`
+        document.title = `${ATTACK_TYPES[attackType]} | CTI Butler`
     }, [])
 
 
     return (
         <Container>
-            <Typography variant="h4">Knowledgebase Search</Typography>
+            <Typography variant="h4">{ATTACK_TYPES[attackType]}</Typography>
             <Typography className="description">
-              <p>Use this page to explore and filter the knowledgebases.</p>
+                <p>Search and filter objects.</p>
             </Typography>
-
             <Grid2 container spacing={2}>
-                <Grid2 size={4}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', }}>
-
-                        <Select
-                            value={filter.attack_type}
-                            label="Type"
-                            onChange={(ev) => setFilterField('attack_type', ev.target.value)}
-                        >
-
-                            <MenuItem key='attack-enterprise' value='attack-enterprise'>MITRE ATT&CK Enterprise</MenuItem>
-
-                            <MenuItem key='attack-ics' value='attack-ics'>MITRE ATT&CK ICS</MenuItem>
-                            <MenuItem key='attack-mobile' value='attack-mobile'>
-                                MITRE ATT&CK Mobile
-                            </MenuItem>
-                            <MenuItem key='capec' value='capec'>
-                                MITRE CAPEC
-                            </MenuItem>
-                            <MenuItem key='cwe' value='cwe'>
-                                MITRE CWE
-                            </MenuItem>
-                            <MenuItem key='disarm' value='disarm'>
-                                DISARM
-                            </MenuItem>
-                            <MenuItem key='atlas' value='atlas'>
-                                MITRE ATLAS
-                            </MenuItem>
-                            <MenuItem key='location' value='location'>
-                                Location
-                            </MenuItem>
-
-                        </Select>
-                    </Box>
-                </Grid2>
                 <Grid2 size={4}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', }}>
                         <TextField

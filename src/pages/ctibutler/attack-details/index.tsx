@@ -17,13 +17,13 @@ function AttackDetailPage() {
     const stixRef = useRef(null);
     const [loading, setLoading] = useState(true)
     const { activeTeam } = useContext(TeamContext);
+    const [scriptLoaded, setScriptLoaded] = useState(false);
 
     const getStixObject = (objects: any[]) => {
-        // const reportId = objects.find(object => object.type === 'report')?.id
-        // setReportId(reportId || '')
+        const reportUUID = detailObject?.id.split('--')[1]
         return {
             "type": "bundle",
-            "id": `bundle--aaaaa`,
+            "id": `bundle--${reportUUID}`,
             "spec_version": "2.1",
             objects: objects,
         }
@@ -60,8 +60,13 @@ function AttackDetailPage() {
         const objects = await fetchAttackBundle(attack_type || '', id)
         setObjects(objects)
         setLoading(false)
-        loadStixData(objects)
     }
+
+    useEffect(() => {
+        if(scriptLoaded || objects.length > 0) {
+            loadStixData(objects)
+        }
+    }, [objects, scriptLoaded])
 
     useEffect(() => {
         if (!id) return
@@ -87,6 +92,20 @@ function AttackDetailPage() {
 
         URL.revokeObjectURL(url);
     };
+
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src = '/stixview.bundle.js';
+        script.async = true;
+        script.onload = () => {
+            setScriptLoaded(true);
+        };
+
+        document.body.appendChild(script);
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
 
     return (
         <Container>
