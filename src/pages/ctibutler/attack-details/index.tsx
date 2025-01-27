@@ -109,7 +109,7 @@ function AttackDetailPage() {
 
     return (
         <Container>
-            <Typography variant="h5" > {detailObject?.name || id} </Typography>
+            <Typography variant="h4" > {detailObject?.name || id} </Typography>
 
 
             <Typography><span style={{ fontWeight: 600 }}>ID: </span>{id}</Typography>
