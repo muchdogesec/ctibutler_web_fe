@@ -109,13 +109,10 @@ function AttackDetailPage() {
 
     return (
         <Container>
-            <Typography variant="h5" > {detailObject?.name || id} </Typography>
+            <Typography variant="h4">{id}: {detailObject?.name || id}</Typography>
 
-
-            <Typography><span style={{ fontWeight: 600 }}>ID: </span>{id}</Typography>
-            <Typography><span style={{ fontWeight: 600 }}>Description: </span>{detailObject?.description}</Typography>
-            <Typography><span style={{ fontWeight: 600 }}>ATT&CK Website link: </span>{detailObject?.external_references?.find(reference => reference.source_name === 'mitre-attack')?.url}</Typography>
-
+            <Typography><p>{detailObject?.description}</p></Typography>
+            
             <Typography sx={{ marginTop: '2rem' }} variant="h5">References</Typography>
             <Table>
                 <TableHead>
