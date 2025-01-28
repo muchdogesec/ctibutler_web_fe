@@ -10,6 +10,9 @@ import {
     TableContainer,
     TablePagination,
     CircularProgress,
+    Select, MenuItem,
+    FormControl,
+    InputLabel,
 } from "@mui/material";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { URLS } from "../../../services/urls.ts";
@@ -42,37 +45,144 @@ const ATTACK_TYPES = {
     "location": "Location"
 };
 
+const ATTACK_ID_FIELDS = {
+    "attack-enterprise": {
+        name: 'attack_id',
+        label: 'ATT&CK ID'
+    },
+    "attack-ics": {
+        name: 'attack_id',
+        label: 'ATT&CK ID'
+    },
+    "attack-mobile": {
+        name: 'attack_id',
+        label: 'ATT&CK ID'
+    },
+    "capec": {
+        name: 'capec_id',
+        label: 'CAPEC ID'
+    },
+    "cwe": {
+        name: 'cwe_id',
+        label: 'CWE ID'
+    },
+    "disarm": {
+        name: 'disarm_id',
+        label: 'DISARM ID'
+    },
+    "atlas": {
+        name: 'atlas_id',
+        label: 'ATLAS ID'
+    },
+    "location": undefined,
+};
+
+const OBJECT_TYPE_FILTERS = {
+    "attack-enterprise": {
+        name: 'attack_type',
+        options: [
+            { name: 'Asset', value: '' },
+            { name: 'Campaign', value: '' },
+            { name: 'Data Component', value: '' },
+            { name: 'Data Source', value: '' },
+            { name: 'Group', value: '' },
+            { name: 'Mitigation', value: '' },
+            { name: 'Software', value: '' },
+            { name: 'Sub-technique', value: '' },
+            { name: 'Tactic', value: '' },
+            { name: 'Technique', value: '' },
+        ],
+    },
+    "attack-ics": {
+        name: 'attack_type',
+        options: [
+            { name: 'Asset', value: '' },
+            { name: 'Campaign', value: '' },
+            { name: 'Data Component', value: '' },
+            { name: 'Data Source', value: '' },
+            { name: 'Group', value: '' },
+            { name: 'Mitigation', value: '' },
+            { name: 'Software', value: '' },
+            { name: 'Sub-technique', value: '' },
+            { name: 'Tactic', value: '' },
+            { name: 'Technique', value: '' },
+        ],
+    },
+    "attack-mobile": {
+        name: 'attack_type',
+        options: [
+            { name: 'Asset', value: '' },
+            { name: 'Campaign', value: '' },
+            { name: 'Data Component', value: '' },
+            { name: 'Data Source', value: '' },
+            { name: 'Group', value: '' },
+            { name: 'Mitigation', value: '' },
+            { name: 'Software', value: '' },
+            { name: 'Sub-technique', value: '' },
+            { name: 'Tactic', value: '' },
+            { name: 'Technique', value: '' },
+        ],
+    },
+    "capec": undefined,
+    "cwe": undefined,
+    "disarm": {
+        name: 'disarm_type',
+        options: [
+            { name: 'Sub-technique', value: '' },
+            { name: 'Tactic', value: '' },
+            { name: 'Technique', value: '' },
+        ],
+    },
+    "atlas": {
+        name: 'atlas_type',
+        options: [
+            { name: 'Mitigation', value: '' },
+            { name: 'Sub-technique', value: '' },
+            { name: 'Tactic', value: '' },
+            { name: 'Technique', value: '' },
+        ],
+    },
+    "location": {
+        name: 'location_type',
+        options: [
+            { name: 'country', value: '' },
+            { name: 'intermediate-region', value: '' },
+            { name: 'region', value: '' },
+            { name: 'sub-region', value: '' },
+        ],
+        multiple: true,
+    },
+}
+
 function MitreAttackListPage() {
     const [objects, setObjects] = useState<Attack[]>([])
     const [page, setPage] = useState(0)
     const [totalResultsCount, setTotalResutsCount] = useState(0)
     const [filter, setFilter] = useState({
         name: '',
-        attack_id: '',
         description: '',
-        type: '',
-        weakness_id: '',
-        capec_id: '',
     })
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
     const [sortField, setSortField] = useState<string>('created');
     const [loading, setLoading] = useState(false)
-    const [initialDataLoaded, setInitialDataLoaded] = useState(false)
+    const [dataLoadIndex, setDataLoadIndex] = useState(0)
+    const [idFilter, setIdFilter] = useState('')
+    const [typeFilter, setTypeFilter] = useState<string[]>([])
     const location = useLocation();
     const { attackType } = useParams<{ attackType: string }>()
 
-    useEffect(() => {
+    const setFiltersAndLoadData = async () => {
         const query = new URLSearchParams(location.search);
+        setIdFilter(query.get(ATTACK_ID_FIELDS[attackType]?.name) || '')
+        setTypeFilter(query.get(OBJECT_TYPE_FILTERS[attackType]?.name)?.split(',') || [])
         setFilter({
             name: query.get('name') || '',
-            attack_id: query.get('attack_id') || '',
             description: query.get('description') || '',
-            type: query.get('type') || '',
-            weakness_id: query.get('weakness_id') || '',
-            capec_id: query.get('capec_id') || '',
         })
-        if (initialDataLoaded) loadData()
-        setInitialDataLoaded(true)
+        setDataLoadIndex(dataLoadIndex + 1)
+    }
+    useEffect(() => {
+        setFiltersAndLoadData()
     }, [location])
 
 
@@ -95,7 +205,7 @@ function MitreAttackListPage() {
     };
 
     function limitCharacters(str, limit = 512) {
-        if (str.length > limit) {
+        if (str?.length > limit) {
             return str.substring(0, limit) + '...';
         }
         return str;
@@ -104,8 +214,17 @@ function MitreAttackListPage() {
 
     const loadData = async () => {
         setLoading(true)
-        updateURLWithParams(filter)
-        const res = await fetchAttackEnterprises(attackType, filter, page, sortField + (sortOrder === 'asc' ? '_ascending' : '_descending'))
+        const queryFilter = {
+            ...filter,
+        }
+        if (ATTACK_ID_FIELDS[attackType]) {
+            queryFilter[ATTACK_ID_FIELDS[attackType].name] = idFilter
+        }
+        if (OBJECT_TYPE_FILTERS[attackType]) {
+            queryFilter[OBJECT_TYPE_FILTERS[attackType].name] = typeFilter
+        }
+        updateURLWithParams(queryFilter)
+        const res = await fetchAttackEnterprises(attackType, queryFilter, page, sortField + (sortOrder === 'asc' ? '_ascending' : '_descending'))
         setObjects(res.data.objects.filter(item => !['identity', 'marking-definition', 'x-mitre-matrix', 'x-mitre-collection'].includes(item.type)))
         setTotalResutsCount(res.data.total_results_count)
         setLoading(false)
@@ -121,7 +240,8 @@ function MitreAttackListPage() {
             disarm: "DISARM",
             atlas: "mitre-atlas",
             cwe: "cwe",
-            capec: "capec"
+            capec: "capec",
+            location: "location2stix",
         }
         const refernceName = idReferenceNameDict[attackType] || 'mitre-attack'
         const id = object.external_references?.find(reference => reference.source_name === refernceName)?.external_id
@@ -129,13 +249,13 @@ function MitreAttackListPage() {
     }
 
     useEffect(() => {
-        if (!initialDataLoaded) return
+        if (!dataLoadIndex) return
         loadData()
-    }, [page, initialDataLoaded])
+    }, [page, dataLoadIndex])
 
     useEffect(() => {
         document.title = `${ATTACK_TYPES[attackType]} | CTI Butler`
-    }, [])
+    }, [attackType])
 
 
     return (
@@ -145,14 +265,14 @@ function MitreAttackListPage() {
                 <p>Search and filter objects.</p>
             </Typography>
             <Grid2 container spacing={2}>
-                <Grid2 size={4}>
+                {ATTACK_ID_FIELDS[attackType] && <Grid2 size={4}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', }}>
                         <TextField
-                            label="ATT&CK ID"
-                            value={filter.attack_id} onChange={(ev) => setFilterField('attack_id', ev.target.value)}
+                            label={ATTACK_ID_FIELDS[attackType]?.label}
+                            value={idFilter} onChange={(ev) => setIdFilter(ev.target.value)}
                         ></TextField>
                     </Box>
-                </Grid2>
+                </Grid2>}
                 <Grid2 size={4}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', }}>
                         <TextField
@@ -167,11 +287,24 @@ function MitreAttackListPage() {
                         <TextField label="Description" value={filter.description} onChange={(ev) => setFilterField('description', ev.target.value)}></TextField>
                     </Box>
                 </Grid2>
-                <Grid2 size={4}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                        <TextField label='Object Type' value={filter.type} onChange={(ev) => setFilterField('type', ev.target.value)}></TextField>
-                    </Box>
-                </Grid2>
+
+                {OBJECT_TYPE_FILTERS[attackType] && <Grid2 size={4}>
+                <FormControl fullWidth>
+                    <InputLabel>Type</InputLabel>
+                        <Select
+                            value={typeFilter}
+                            label="Type"
+                            sx={{ flex: 'auto' }}
+                            onChange={(e) => setTypeFilter(e.target.value)}
+                            multiple={OBJECT_TYPE_FILTERS[attackType].multiple}
+                        >
+                            {OBJECT_TYPE_FILTERS[attackType].options.map((option) =>
+                                <MenuItem key={option.name} value={option.name}>{option.name}</MenuItem>
+                            )}
+                        </Select>
+                    </FormControl>
+                </Grid2>}
+
                 <Grid2 size={4}>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                         <Button onClick={() => filterObjects()} variant="contained">Filter</Button>
@@ -191,14 +324,6 @@ function MitreAttackListPage() {
                                 Description
                                 {sortField === 'created' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}
                             </TableCell>
-                            <TableCell onClick={() => handleSortChange('cvss_base_score')} style={{ cursor: 'pointer' }}>
-                                Object Type
-                                {sortField === 'cvss_base_score' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}
-                            </TableCell>
-                            <TableCell onClick={() => handleSortChange('cvss_base_score')} style={{ cursor: 'pointer' }}>
-                                Knowledgebase Name
-                                {sortField === 'cvss_base_score' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}
-                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -216,8 +341,6 @@ function MitreAttackListPage() {
                                 <TableCell><Link to={URLS.attackDetailPage(attackType || '', getAtlasID(object))}>{getAtlasID(object)}</Link></TableCell>
                                 <TableCell>{object.name}</TableCell>
                                 <TableCell>{limitCharacters(object.description)}</TableCell>
-                                <TableCell>{object.type}</TableCell>
-                                <TableCell>{object.type}</TableCell>
                             </TableRow>)}
                         </>)}
 

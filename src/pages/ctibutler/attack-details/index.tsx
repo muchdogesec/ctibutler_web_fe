@@ -3,10 +3,13 @@ import {
     Container,
     Typography,
     Table, TableHead, TableRow, TableBody, TableCell,
-    Box, Button, Tooltip
+    Box, Button, Tooltip, Select, MenuItem,
+    FormControl,
+    InputLabel,
+    CircularProgress
 } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { fetchAttackBundle, fetchAttackObject } from "../../../services/ctibutler_api.ts";
+import { fetchAttackBundle, fetchAttackObject, fetchKnowledgebaseVersions } from "../../../services/ctibutler_api.ts";
 import { TeamContext } from "../../../contexts/team-context.tsx";
 
 
@@ -18,6 +21,8 @@ function AttackDetailPage() {
     const [loading, setLoading] = useState(true)
     const { activeTeam } = useContext(TeamContext);
     const [scriptLoaded, setScriptLoaded] = useState(false);
+    const [versions, setVersions] = useState<string[]>([])
+    const [selectedVersion, setSelectedVersion] = useState('')
 
     const getStixObject = (objects: any[]) => {
         const reportUUID = detailObject?.id.split('--')[1]
@@ -52,18 +57,28 @@ function AttackDetailPage() {
     }
 
     const loadDetailObject = async () => {
-        const res = await fetchAttackObject(attack_type || '', id)
+        const res = await fetchAttackObject(attack_type || '', id, selectedVersion)
         setDetailObject(res.data.objects[0])
+    }
+    const loadVersions = async () => {
+        const res = await fetchKnowledgebaseVersions(attack_type || '', id)
+        let versions: string[] = []
+        res.data.forEach(item => {
+            versions = [...versions, ...item.versions]
+        })
+        setVersions(versions)
+        setSelectedVersion(versions[0])
     }
     const loadData = async () => {
         if (!id) return
-        const objects = await fetchAttackBundle(attack_type || '', id)
+        setLoading(true)
+        const objects = await fetchAttackBundle(attack_type || '', id, selectedVersion)
         setObjects(objects)
         setLoading(false)
     }
 
     useEffect(() => {
-        if(scriptLoaded || objects.length > 0) {
+        if (scriptLoaded || objects.length > 0) {
             loadStixData(objects)
         }
     }, [objects, scriptLoaded])
@@ -72,9 +87,17 @@ function AttackDetailPage() {
         if (!id) return
         loadDetailObject()
         loadData()
+        loadVersions()
     }, [id])
+
+    const changeVersion = (version: string) => {
+        setSelectedVersion(version)
+        loadDetailObject()
+        loadData()
+    }
+
     useEffect(() => {
-        document.title = `Mitre Att&ck | CTI Butler`
+        document.title = `${id} | CTI Butler`
     }, [])
 
     const downloadStixObject = async () => {
@@ -109,10 +132,28 @@ function AttackDetailPage() {
 
     return (
         <Container>
-            <Typography variant="h4">{id}: {detailObject?.name || id}</Typography>
+            <Box sx={{ display: 'flex' }}>
+                <Box sx={{ flex: 'auto' }}>
+                    {loading ? <CircularProgress /> : <></>}
+                    <Typography variant="h4">{id}: {detailObject?.name || id}</Typography>
+                </Box>
+                <FormControl>
+                    <InputLabel>Version</InputLabel>
+                    <Select
+                        value={selectedVersion}
+                        label="Version"
+                        sx={{ minWidth: '300px' }}
+                        onChange={(e) => changeVersion(e.target.value)}
+                    >
+                        {versions.map((option) =>
+                            <MenuItem key={option} value={option}>{option}</MenuItem>
+                        )}
+                    </Select>
+                </FormControl>
+
+            </Box>
 
             <Typography><p>{detailObject?.description}</p></Typography>
-            
             <Typography sx={{ marginTop: '2rem' }} variant="h5">References</Typography>
             <Table>
                 <TableHead>
@@ -135,17 +176,18 @@ function AttackDetailPage() {
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Ref ID</TableCell>
-                        <TableCell>Ref name</TableCell>
-                        <TableCell>Ref Knowledgebase</TableCell>
-                        <TableCell>Type</TableCell>
+                        <TableCell>Relationship type</TableCell>
+                        <TableCell>Relationship description</TableCell>
+                        <TableCell>Source Object</TableCell>
+                        <TableCell>Target Object</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {objects?.filter(object => object?.type === 'relationship').map(refernce => <TableRow>
-                        <TableCell>{refernce.id}</TableCell>
+                        <TableCell>{refernce.relationship_type}</TableCell>
                         <TableCell>{refernce.description}</TableCell>
-                        <TableCell>{refernce.url}</TableCell>
+                        <TableCell>{refernce.source_ref}</TableCell>
+                        <TableCell>{refernce.target_ref}</TableCell>
                     </TableRow>)}
                 </TableBody>
             </Table>
