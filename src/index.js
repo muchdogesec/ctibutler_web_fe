@@ -79,11 +79,11 @@ const router = createBrowserRouter([
         ]
       },
       {
-        path: "attacks/:attackType",
+        path: "knowledgebases/:attackType",
         Component: MitreAttackListPage,
       },
       {
-        path: "attacks/:attack_type/:id",
+        path: "knowledgebases/:attack_type/:id",
         Component: AttackDetailPage,
       },
       {
